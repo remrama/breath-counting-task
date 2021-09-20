@@ -3,7 +3,7 @@
 
 var timeline = [];
 
-var bct_length_minutes = 10; // of the whole breathing task (not including instructions)
+var bct_length_minutes = 20; // of the whole breathing task (not including instructions)
 var length_ms = bct_length_minutes*60*1000;
 var pbar_frac = .1; // fraction for progress bar (it will jump this pct)
 var pbar_ms = pbar_frac * length_ms

@@ -12,9 +12,9 @@ var welcome_msg1 = `<p>Hello. &#128512;</p>
   turn off your cell phone,<br>
   and minimize potential distractions.</p><br><br>`;
 var welcome_msg2 = `<p>This experiment will take<br>
-  approximately 20 minutes to complete.</p>
+  approximately 30 minutes to complete.</p>
   <p>After about 5 minutes of brief questionnaires,<br>
-  you will be asked to complete a task that takes about 15 minutes.</p><br><br>`;
+  you will be asked to complete a task that takes about 25 minutes.</p><br><br>`;
 var welcome_msg3 = `<p>Next, the experiment will switch to fullscreen mode.<br>
   Please stay in fullscreen mode until the experiment is over.</p>
   <p>It's also important that you do not hit the <code>Back</code> button<br>
