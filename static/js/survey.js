@@ -115,6 +115,7 @@ var ffmq = {
     "When I have a sensation in my body, it's difficult for me to describe it because I can't find the right words.",
     'It seems I am "running on automatic" without much awareness of what I\'m doing.',
     "When I have distressing thoughts or images, I feel calm soon after.",
+    'This is not a question, just select the "Often true" option.',
     "I tell myself that I shouldn't be thinking the way I'm thinking.",
     "I notice the smells and aromas of things.",
     "Even when I'm feeling terribly upset, I can find a way to put it into words.",
