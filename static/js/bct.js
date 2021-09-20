@@ -87,7 +87,7 @@ var sound_tester = {
       type: "html-button-response",
       stimulus: sound_tst_msg,
       choices: ["Play sound", "Continue"],
-      data: {"phase":"bct-intro"},
+      data: {phase:"bct-intro"},
       on_finish: function(data){
         if (data.response == 0) {
           play_audio();
@@ -119,13 +119,13 @@ var instructions = {
   pages: [msg1, msg2, msg3, msg4, msg5],
   show_clickable_nav: true,
   allow_keys: false,
-  data: {"phase":"bct-intro"},
+  data: {phase:"bct-intro"},
   button_label_previous: "Previous",
   button_label_next: "Continue"
 };
 var button_checks = {
   type: "html-keyboard-response",
-  data: {"phase":"bct-intro"},
+  data: {phase:"bct-intro"},
   timeline: [
     // {stimulus: msg6, choices: ["arrowdown"]},
     {stimulus: msg7, choices: ["arrowright"], on_finish: play_audio},
@@ -137,7 +137,7 @@ var pre_bct_countdown = {
   type: "html-button-response",
   stimulus: msg9, //+ "<div id='clockstatement'>You may begin the task in <span id='clock'>0:05</span></div>",
   choices: ["Begin"],
-  data: {"phase":"bct-intro"},
+  data: {phase:"bct-intro"},
   // on_load: function(){
   //   var wait_time = 5 * 1000; // in milliseconds
   //   var start_time = performance.now();
@@ -273,7 +273,7 @@ var conditional_feedback_display = {
   timeline: [
     {
       type: "html-button-response",
-      data: {"phase":"bct-practice"},
+      data: {phase:"bct-practice"},
       stimulus: feedback_html,
       choices: ["Restart"],
     }
@@ -318,7 +318,7 @@ var practice1_procedure = {
       choices: response_keys,
       response_ends_trial: true,
       on_finish: response_handler,
-      data: {"phase":"bct-practice"},
+      data: {phase:"bct-practice"},
       // data: { //this stuff gets ADDED to the trial data structure
       //   "practice": true
       // },
@@ -338,7 +338,7 @@ var practice1_procedure = {
 
 var mid_practice_msg = {
   type: "html-button-response",
-  data: {"phase":"bct-practice"},
+  data: {phase:"bct-practice"},
   stimulus: `<p>Great!</p>
     <p>Now try repeating the same process without visual feedback.</p>
     <p>You will only see a cross in the center of the screen while
@@ -349,7 +349,7 @@ var mid_practice_msg = {
 
 var reset_practice_trial_counter = {
   type: "call-function",
-  data: {"phase":"bct-practice"},
+  data: {phase:"bct-practice"},
   func: function() {
   // reset this from the first practice round
   // (this means it takes the same amount of correct trials)
@@ -366,7 +366,7 @@ var practice2_procedure = {
       choices: response_keys,
       response_ends_trial: true,
       on_finish: response_handler,
-      data: {"phase":"bct-practice"}
+      data: {phase:"bct-practice"}
     },
     conditional_feedback_display
   ],
@@ -392,8 +392,8 @@ var bct_response = {
   response_ends_trial: true,
   on_finish: response_handler,
   data: {
-    "phase": "bct-task",
-    "breath_count": function() {
+    phase: "bct-task",
+    breath_count: function() {
       return breath_count;
     }
   }
@@ -411,7 +411,7 @@ function timer_init() {
 
 var timer_start = {
   type: "call-function",
-  data: {"phase":"bct-practice"},
+  data: {phase:"bct-practice"},
   func: timer_init
   // func: function(){
   //     setTimeout(function(){ jsPsych.endExperiment("Experiment over"); }, length_ms);

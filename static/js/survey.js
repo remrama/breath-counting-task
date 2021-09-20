@@ -144,7 +144,7 @@ var lusk_survey = {
   preamble: lusk.preamble,
   html: generate_table_html(lusk.left_header,
     lusk.responses, lusk.prompts, lusk.acronym),
-  data: {"phase":"lusk"}
+  data: {phase:"lusk"}
 };
 
 // this MUST be placed after the MADRE
@@ -163,7 +163,7 @@ var ffmq_survey = {
   preamble: ffmq.preamble,
   html: generate_table_html(ffmq.left_header,
     ffmq.responses, ffmq.prompts, ffmq.acronym),
-  data: {"phase":"ffmq"}
+  data: {phase:"ffmq"}
 };
 
 // subset of the madre
@@ -176,7 +176,7 @@ var scale_1 = [
 ];
 var madre_survey = {
   type: "survey-multi-choice",
-  data: {"phase":"madre"},
+  data: {phase:"madre"},
   questions: [
     {
       name: "MADRE1",
@@ -270,7 +270,7 @@ var demographics_html = `
 var demographics = {
   type: "survey-html-form",
   html: demographics_html,
-  data: {"phase":"demographics"}
+  data: {phase:"demographics"}
 }
 
 var lucid_categorization_loop = {
@@ -281,7 +281,7 @@ var lucid_categorization_loop = {
         + "<br>all of a sudden I realized I was dreaming.</p>"
         + "<br><br>",
       choices: ["Non-lucid", "Lucid"],
-      data: {"phase": "lucid_definition"},
+      data: {phase: "lucid_definition"},
       prompt: "<p>Is this a lucid dream?</p>",
       data: {
         answer: 1, // 1 for lucid, bc it's the second choice
@@ -305,7 +305,7 @@ var lucid_categorization_loop = {
       trial_duration: 2000,
       // carry over from prev trial
       data: {
-        "phase": "lucid_definition",
+        phase: "lucid_definition",
         correct: function() {
           return jsPsych.data.getLastTrialData().values()[0].correct;
         }
@@ -338,5 +338,5 @@ var lucid_def_trial = {
   type: "html-button-response",
   stimulus: lucid_def,
   choices: ["Continue"],
-  data: {"phase":"lucid_definition"}
+  data: {phase:"lucid_definition"}
 };
