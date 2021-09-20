@@ -146,6 +146,17 @@ var lusk_survey = {
   data: {"phase":"lusk"}
 };
 
+// this MUST be placed after the MADRE
+var lusk_survey_conditional = {
+  timeline: [lusk_survey],
+  conditional_function: function() {
+    var data = jsPsych.data.getLastTrialData().values()[0];
+    // show if MADRE3/lucidity is NOT never
+    return (data.response.MADRE3 !== "never");
+  }
+};
+
+
 var ffmq_survey = {
   type: "survey-html-form",
   preamble: ffmq.preamble,

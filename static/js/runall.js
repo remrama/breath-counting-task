@@ -68,7 +68,7 @@ timeline.push(demographics);
 timeline.push(lucid_def_trial);
 timeline.push(lucid_categorization_loop);
 timeline.push(madre_survey);
-timeline.push(lusk_survey);
+timeline.push(lusk_survey_conditional);
 timeline.push(ffmq_survey);
 
 // breath counting task
