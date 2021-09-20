@@ -392,7 +392,7 @@ var bct_response = {
   response_ends_trial: true,
   on_finish: response_handler,
   data: {
-    phase: "bct-task",
+    phase: "bct-test",
     breath_count: function() {
       return breath_count;
     }

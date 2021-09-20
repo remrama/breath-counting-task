@@ -83,6 +83,11 @@ timeline.push(pre_bct_countdown);
 timeline.push(timer_start);
 timeline.push(infinite_loop);
 
+// // nback
+// timeline.push(nback_instructions);
+// timeline.push(nback_sequence);
+// timeline.push(nback_total_feedback);
+
 // outro stuff
 timeline.push(closing_screen);
 // timeline.push(fullscreen_off);
