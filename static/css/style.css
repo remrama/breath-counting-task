@@ -24,6 +24,8 @@
   /*align: left;*/
   /*height: 70px;*/
   /*text-align: center;*/
+  position: sticky;
+  top: 0; /* required along w sticky to make the header float */
   vertical-align: bottom;
   padding: 15px;
   border-bottom: 1px solid grey;
