@@ -12,11 +12,10 @@ var min_breath_gap = 1000; // ms between breaths for practice warning
 var fixation_html = "<p style='font-size:60px'>+</p>";
 var response_keys = ["arrowdown", "arrowright", " "];
 
-var feedback_html = "<p>You responded either incorrectly or too fast.</p>"
-  + "<p>Let's restart the counter.</p>"
-  + "<p>Make sure you press <code>&downarrow;</code> only once for each exhale,"
-  + "<br>and then press <code>&rightarrow;</code> on the 9th exhale.</p>"
-  + "<br><br>";
+var feedback_html = `<p>You responded either incorrectly or too fast.</p>
+  <p>Let's restart the counter.</p>
+  <p>Make sure you press <code>&downarrow;</code> only once for each exhale,<br>
+  and then press <code>&rightarrow;</code> on the 9th exhale.</p><br><br>`;
 
 function play_audio() {
   var audio = new Audio("sound.mp3");
@@ -49,37 +48,30 @@ var msg3 = `<p>To help attention stay with the breath,<br>
   <p>Please press the Down Arrow (<code>&downarrow;</code>) with breaths 1-8,<br>
   and the Right Arrow (<code>&rightarrow;</code>) with breath 9.</p>
   <p>This means you'll be pressing a button with each breath.</p><br><br>`;
-var msg4 = "<p>If you find that you have forgotten the count,"
-  + "<br>just press the spacebar and restart the count at 1 with the next breath.</p>"
-  + "<p>Do not count the breaths using your fingers but only in your head.</p>"
-  + "<br><br>";
-var msg5 = "<p>We suggest you sit in an upright,"
-  + "<br>relaxed posture that feels comfortable.</p>"
-  + "<p>Please keep your eyes at least partly open"
-  + "<br>and resting on the screen during the experiment.</p>"
-  + "<p>The task will last about " + bct_length_minutes + " minutes after a brief practice.</p>"
-  + "<br><br>";
-var msg6 = `<p>Press the <code>&downarrow;</code> key.</p>
-  <br><br>`;
+var msg4 = `<p>If you find that you have forgotten the count,<br>
+  just press the spacebar and restart the count at 1 with the next breath.</p>
+  <p>Do not count the breaths using your fingers but only in your head.</p><br><br>`;
+var msg5 = `<p>We suggest you sit in an upright,<br>
+  relaxed posture that feels comfortable.</p>
+  <p>Please keep your eyes at least partly open<br>
+  and resting on the screen during the experiment.</p>
+  <p>The task will last about ${bct_length_minutes} minutes after a brief practice.</p><br><br>`;
+var msg6 = `<p>Press the <code>&downarrow;</code> key.</p><br><br>`;
 var msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
-  <p>Press the <code>&rightarrow;</code> key.</p>
-  <br><br>`;
-var msg8 = `<p>Press the spacebar.</p>
-  <br><br>`;
-var msg9 = "<p>Great!</p>"
-  + "<p>The task will begin now.</p>"
-  + "<p>The progress bar at the top is only a " + bct_length_minutes + " minute timer"
-  + "<br>and is not affected by your breathing pace or accuracy.</p>"
-  + "<p>The experiment will end after " + bct_length_minutes + " minutes.</p>"
-  + "<br><br>";
+  <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
+var msg8 = `<p>Press the spacebar.</p><br><br>`;
+var msg9 = `<p>Great!</p>
+  <p>The task will begin now.</p>
+  <p>The progress bar at the top is only a ${bct_length_minutes} minute timer<br>
+  and is not affected by your breathing pace or accuracy.</p>
+  <p>The experiment will end after ${bct_length_minutes} minutes.</p><br><br>`;
 
 var sound_tst_msg = `<p>Before we begin the next task,<br>
   please make sure your sound is on.<br></p>
   <p><b>Use the <code>Play sound</code> button below to check your volume.</b></p>
   <p>Play the sound repeatedly until the ring plays<br>
   at an <b>audible but non-disruptive volume.</b></p>
-  <p>Continue after you are satisfied with the volume.</p>
-  <br><br>`;
+  <p>Continue after you are satisfied with the volume.</p><br><br>`;
 
 var sound_tester = {
   timeline: [
