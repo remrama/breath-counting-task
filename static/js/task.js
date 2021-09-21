@@ -1,6 +1,25 @@
+/*
+
+Full javascript/jspsych file for running complete experiment.
+
+It's all in one file for easy copy/pasting into cognition.run.
+
+It's sectioned into major headings with ========== for each of
+====== Main Intro/Outro
+====== Surveys (LUSK, FFMQ, etc.)
+====== Breath Counting Task
+====== N-Back Task
+
+Each of the main tasks have subheadings marked with ********* for each of
+*** variables
+*** instructions
+*** practice
+*** test
+
+*/
 
 
-// ============================= MAIN INTRO CONTENT
+// ============================= MAIN INTRO/OUTRO CONTENT
 
 var fullscreen_off = {
   type: "fullscreen",
@@ -58,59 +77,19 @@ var closing_screen = {
 
 // ============================ SURVEY CONTENT
 
+// ***** variables
 
-
-function generate_table_html(left_column_header, response_options, prompts, scale_acronym) {
-  // build html table
-  var html = "";
-
-  // open the table
-  html += "<table class='mytable'>";
-
-  // make the table header
-  html += "<thead><tr>";
-  // add the left column header if there is one
-  html += "<th width=70% align=left>"+left_column_header+"</th>";
-  // add a column head for each response option
-  for (r in response_options) {
-    html += "<th>"+response_options[r]+"</th>";
-  };
-  // close up the head
-  html += "</tr></thead>";
-
-  // add a row for each prompt
-  html += "<tbody>";
-  for (p in prompts) {
-    html += "<tr>"
-    // add the prompt in first cell
-    html += "<td align=left>"+prompts[p]+"</td>";
-    // add a radio button for each response option
-    for (r in response_options) {
-      html += "<td><input type='radio' name='"+scale_acronym+p.toString()+"' value='"+r.toString()+"' required></td>";
-    };
-    html += "</tr>";
-  };
-  // close the body
-  html += "</tbody>";
-
-  // close the table
-  html += "</table>";
-
-  // add a break so there's some space before the button
-  html += "<br>";
-
-  return html
-}
-
-
-// **************************************** //
+var lucid_definition = `<p>Please read the following definition carefully.</p>
+  <p>In a lucid dream, <em>one is aware that one is dreaming during the dream.</em></p>
+  <p>Thus it is possible to wake up deliberately,
+  <br>or to influence the action of the dream actively,
+  <br>or to observe the course of the dream passively.</p>
+  <br><br>`;
 
 var lusk = {
-
   acronym: "LUSK",
   left_header: "In how many of your lucid dreams...",
   preamble: null,
-
   responses: [
     "In none",
     "In a quarter",
@@ -118,7 +97,6 @@ var lusk = {
     "In three quarters",
     "In all"
   ],
-
   prompts: [
     "...were you aware of differences to the waking state (e.g., bizarre incidents or settings)?",
     "...were you aware that your physical body was asleep?",
@@ -131,17 +109,12 @@ var lusk = {
     "...did you choose deliberately a specific action?",
     "...were you able to perform specific actions (e.g., flying, floating, talking with dream characters, perform magic, engaging in sex)?",
   ]
-
 };
 
-// **************************************** //
-
 var ffmq = {
-
   acronym: "FFMQ",
   left_header: "",
   preamble: null,
-
   responses: [
     "Never or very rarely true",
     "Rarely true",
@@ -149,7 +122,6 @@ var ffmq = {
     "Often true",
     "Very often or always true"
   ],
-
   prompts: [
     "When I'm walking, I deliberately notice the sensations of my body moving.",
     "I'm good at finding words to describe my feelings.",
@@ -192,48 +164,90 @@ var ffmq = {
     "I find myself doing things without paying attention.",
     "I disapprove of myself when I have irrational ideas.",
   ]
-
-}
-
-// **************************************** //
-
-
-
-var lusk_survey = {
-  type: "survey-html-form",
-  preamble: lusk.preamble,
-  html: generate_table_html(lusk.left_header,
-    lusk.responses, lusk.prompts, lusk.acronym),
-  data: {phase:"lusk"}
 };
 
-// this MUST be placed after the MADRE
-var lusk_survey_conditional = {
-  timeline: [lusk_survey],
-  conditional_function: function() {
-    var data = jsPsych.data.getLastTrialData().values()[0];
-    // show if MADRE3/lucidity is NOT never
-    return (data.response.MADRE3 !== "never");
-  }
+var demographics_html = `<p>
+  <label for="age">Age:</label>
+  <input type="number" name="age" min="0" max="99" required /> years
+  <br><br>
+  <label for="sex">Sex:</label>
+  <select name="sex" required>
+    <option value="">
+    <option value="1">Female
+    <option value="2">Male
+    <option value="3">Intersex
+    <option value="0">Prefer not to respond
+  </select>
+  <br><br>
+  <label for="gender">Gender:</label>
+  <select name="gender" required>
+    <option value="">
+    <option value="1">Woman
+    <option value="2">Man
+    <option value="3">Transgender
+    <option value="4">Non-binary/non-conforming
+    <option value="0">Prefer not to respond
+  </select>
+  <br><br>
+  <label for="ethnicity">Ethnicity:</label>
+  <select name="ethnicity" required>
+    <option value="">
+    <option value="1">American Indian or Alaska Native
+    <option value="2">Asian
+    <option value="3">Black or African American
+    <option value="4">Hispanic or Latino
+    <option value="5">Native Hawaiian or Other Pacific Islander
+    <option value="6">White
+    <option value="0">Prefer not to respond
+  </select>
+  <br><br>
+  </p>`;
+
+function generate_table_html(left_column_header, response_options, prompts, scale_acronym) {
+  // build html table
+  var html = "";
+
+  // open the table
+  html += "<table class='mytable'>";
+
+  // make the table header
+  html += "<thead><tr>";
+  // add the left column header if there is one
+  html += "<th width=70% align=left>"+left_column_header+"</th>";
+  // add a column head for each response option
+  for (r in response_options) {
+    html += "<th>"+response_options[r]+"</th>";
+  };
+  // close up the head
+  html += "</tr></thead>";
+
+  // add a row for each prompt
+  html += "<tbody>";
+  for (p in prompts) {
+    html += "<tr>"
+    // add the prompt in first cell
+    html += "<td align=left>"+prompts[p]+"</td>";
+    // add a radio button for each response option
+    for (r in response_options) {
+      html += "<td><input type='radio' name='"+scale_acronym+p.toString()+"' value='"+r.toString()+"' required></td>";
+    };
+    html += "</tr>";
+  };
+  // close the body
+  html += "</tbody>";
+
+  // close the table
+  html += "</table>";
+
+  // add a break so there's some space before the button
+  html += "<br>";
+
+  return html
 };
 
 
-var ffmq_survey = {
-  type: "survey-html-form",
-  preamble: ffmq.preamble,
-  html: generate_table_html(ffmq.left_header,
-    ffmq.responses, ffmq.prompts, ffmq.acronym),
-  data: {phase:"ffmq"}
-};
+// ****** jspsych survey items
 
-// subset of the madre
-var scale_1 = [
-  "Strongly Disagree", 
-  "Disagree", 
-  "Neutral", 
-  "Agree", 
-  "Strongly Agree"
-];
 var madre_survey = {
   type: "survey-multi-choice",
   data: {phase:"madre"},
@@ -285,47 +299,31 @@ var madre_survey = {
   ]
 };
 
+var lusk_survey = {
+  type: "survey-html-form",
+  preamble: lusk.preamble,
+  html: generate_table_html(lusk.left_header,
+    lusk.responses, lusk.prompts, lusk.acronym),
+  data: {phase:"lusk"}
+};
 
-// ***   define some other stuff   *** //
+// this MUST be placed after the MADRE
+var lusk_survey_conditional = {
+  timeline: [lusk_survey],
+  conditional_function: function() {
+    var data = jsPsych.data.getLastTrialData().values()[0];
+    // show if MADRE3/lucidity is NOT never
+    return (data.response.MADRE3 !== "never");
+  }
+};
 
-var demographics_html = `
-  <p>
-  <label for="age">Age:</label>
-  <input type="number" name="age" min="0" max="99" required /> years
-  <br><br>
-  <label for="sex">Sex:</label>
-  <select name="sex" required>
-    <option value="">
-    <option value="1">Female
-    <option value="2">Male
-    <option value="3">Intersex
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  <label for="gender">Gender:</label>
-  <select name="gender" required>
-    <option value="">
-    <option value="1">Woman
-    <option value="2">Man
-    <option value="3">Transgender
-    <option value="4">Non-binary/non-conforming
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  <label for="ethnicity">Ethnicity:</label>
-  <select name="ethnicity" required>
-    <option value="">
-    <option value="1">American Indian or Alaska Native
-    <option value="2">Asian
-    <option value="3">Black or African American
-    <option value="4">Hispanic or Latino
-    <option value="5">Native Hawaiian or Other Pacific Islander
-    <option value="6">White
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  </p>
-`;
+var ffmq_survey = {
+  type: "survey-html-form",
+  preamble: ffmq.preamble,
+  html: generate_table_html(ffmq.left_header,
+    ffmq.responses, ffmq.prompts, ffmq.acronym),
+  data: {phase:"ffmq"}
+};
 
 var demographics = {
   type: "survey-html-form",
@@ -378,25 +376,9 @@ var lucid_categorization_loop = {
   }
 };
 
-var lucid_def = `<p>Please read the following definition carefully.</p>
-  <p>In a lucid dream, <em>one is aware that one is dreaming during the dream.</em></p>
-  <p>Thus it is possible to wake up deliberately,
-  <br>or to influence the action of the dream actively,
-  <br>or to observe the course of the dream passively.</p>
-  <br><br>`;
-
-// var lucid_def = `
-//   <p>Please read the following definition carefully.</p>
-//   <p>In a lucid dream, <em>one is aware that one is dreaming during the dream.</em></p>
-//   <p>Thus it is possible to wake up deliberately,
-//   <br>or to influence the action of the dream actively,
-//   <br>or to observe the course of the dream passively.</p>
-//   <br><br>
-// `;
-
-var lucid_def_trial = {
+var lucid_definition_trial = {
   type: "html-button-response",
-  stimulus: lucid_def,
+  stimulus: lucid_definition,
   choices: ["Continue"],
   data: {phase:"lucid_definition"}
 };
@@ -408,10 +390,7 @@ var lucid_def_trial = {
 // ============================ BREATH COUNTING TASK STUFF
 
 
-// *********************
-// ** setup variables **
-
-var timeline = [];
+// ******* variables
 
 var bct_length_minutes = 20; // of the whole breathing task (not including instructions)
 var length_ms = bct_length_minutes*60*1000;
@@ -432,12 +411,9 @@ function play_audio() {
   audio.play();
 };
 
-// *********************
 
+// **** intro/instructions
 
-
-// *******************************
-// ** beginning messages/trials **
 var msg1 = `<p>In this task, we would like you to be aware of your breath.<p>
   <p>Please be aware of the movement of breath in and out
   <br>in the space below your nose and above your upper lip.<p>
@@ -837,6 +813,182 @@ var infinite_loop = {
 
 
 
+// ============================== N-BACK TASK
+
+
+// **** variables
+
+var nback_set = ["Z", "X", "C", "V", "B", "N"];
+var sequence = [];
+var how_many_back = 2; // the "n" in nback!
+var nback_n_trials = 210; // # of trials (encoded letters)
+var nback_iti = 500; // ms
+var nback_encoding_length = 1500; // ms
+
+var task_length = Math.round(nback_n_trials * (nback_encoding_length+nback_iti) / 1000/60)
+
+// **** instructions
+
+var instructions_msg1 = `<p>This next task tests your ability<br>
+  to hold information over short periods of time.</p>
+  <p>This memory task will take about ${task_length} minutes.</p>`;
+var instructions_msg2 = `<div style="width: 800px;">
+  <p>You will see a sequence of letters presented one at a time.<br>
+  Your task is to determine if the letter on the screen matches<br>
+  the letter that appeared ${how_many_back} letters before.</p>
+  <p>If the letter is match <span style="font-weight: bold;">press the M key.</span></p>
+  <p>For example, if you saw the sequence X, C, V, B, V, X<br>
+  you would press the M key when the second V appeared on the screen.</p>
+  <p>You do not need to press any key when there is not a match.</p>
+  </div>`;
+var instructions_msg3 = `<div style="width: 800px;">
+  <p>The sequence will begin on the next screen.</p>
+  <p>Remember: press the M key if the letter on the screen<br>
+  matches the letter that appeared two letters ago.</p>
+  </div>`;
+
+var nback_instructions = {
+  type: "instructions",
+  pages: [instructions_msg1, instructions_msg2, instructions_msg3],
+  show_clickable_nav: true,
+  allow_keys: false,
+  data: {phase:"nback-intro"},
+  button_label_previous: "Previous",
+  button_label_next: "Continue"
+};
+
+// var instructions_3 = {
+//   type: 'html-button-response',
+//   stimulus: ''+
+//     '<p>Remember: press the M key if the letter on the screen matches the letter that appeared two letters ago.</p>'+
+//   choices: ["I'm ready to start!"],
+//   post_trial_gap: 1000
+// }
+// timeline.push(instructions_3);
+
+/* feedback */
+var nback_total_feedback = {
+  type: 'html-button-response',
+  stimulus: function(){
+    var test_trials = jsPsych.data.get().filter({phase: 'nback-test'}).last(nback_n_trials-2);
+    var n_match = test_trials.filter({match: true}).count();
+    var n_nonmatch = test_trials.filter({match: false}).count();
+    var n_correct = test_trials.filter({match: true, correct: true}).count();
+    var false_alarms = test_trials.filter({match: false, correct: false}).count();
+
+    var html = "<div style='width:800px;'>"+
+      "<p>All done!</p>"+
+      "<p>You correctly identified "+n_correct+" of the "+n_match+" matching items.</p>"+
+      "<p>You incorrectly identified "+false_alarms+" of the "+n_nonmatch+" non-matching items as matches.</p>";
+    
+    return html;
+  },
+  choices: ["Continue"]
+};
+
+
+
+let letter = "";
+
+var text_obj = {
+  obj_type: "text",
+  content: letter,
+  font: "normal 60px sans-serif",
+  startX: "center",
+  startY: "center",
+  origin_center: true,
+  show_start_time: 0,
+  show_end_time: nback_encoding_length,
+  text_color: "black",
+};
+
+function reset_nback_stimulus(trial) {
+  // pick the letter/stimulus
+  if(sequence.length < how_many_back){
+    letter = jsPsych.randomization.sampleWithoutReplacement(nback_set, 1)[0]
+  } else {
+    if(jsPsych.timelineVariable("match", true) == true){
+      letter = sequence[sequence.length - how_many_back];
+    } else {
+      var possible_letters = jsPsych.randomization.sampleWithoutReplacement(nback_set, 2);
+      if(possible_letters[0] != sequence[sequence.length - how_many_back]){
+        letter = possible_letters[0];
+      } else {
+        letter = possible_letters[1];
+      };
+    };
+  };
+  // reset the jspsychophys stimulus
+  text_obj.font = "normal 60px sans-serif";
+  text_obj.text_color = "black";
+  text_obj.content = letter;
+  // var data = jsPsych.data.getLastTrialData().values()[0];
+  // console.log(data);
+  sequence.push(letter);
+  return text_obj;
+};
+
+const nback_trial = {
+  type: "psychophysics",
+  canvas_height: 500,
+  trial_duration: nback_encoding_length+nback_iti,
+  prompt: '<p>Pressing the ArrowUp/ArrowDown key, the color of the circle will change. <br>Press the space key to finish the program.</p>',
+  stimuli: [reset_nback_stimulus], // These can be referenced using the jsPsych.currentTrial().stimuli array.
+  response_type: "key",
+  choices: ["m"],
+  response_start_time: 100,
+  response_ends_trial: false,
+  data: {
+    phase:"nback-test",
+    // match: function(){return jsPsych.timelineVariable("match", true);},
+    match: jsPsych.timelineVariable("match"),
+    letter: function(){return letter;}, // could also pull this from sequence variable
+  },
+  key_down_func: function(event){ // The key_up_func is also available. In that case, the color of the circle changes when you release the key. 
+    if (event.key === "m") {
+      if (jsPsych.timelineVariable("match", true) == true) {
+        jsPsych.currentTrial().stim_array[0].text_color = "green";
+        jsPsych.currentTrial().stim_array[0].font = "bold 60px sans-serif";
+      } else {
+        jsPsych.currentTrial().stim_array[0].text_color = "red";
+        jsPsych.currentTrial().stim_array[0].font = "bold 60px sans-serif";
+      };
+    };
+  },
+  on_finish: function(data) {
+    if (data.match == true) {
+      data.correct = (data.key_press != null);
+    } else if (data.match == false) {
+      data.correct = (data.key_press === null);
+    };
+    console.log(data);
+  }
+};
+
+var nback_trial_vars = [
+  {match: true},
+  {match: false}
+]
+
+var nback_sequence = {
+  timeline: [nback_trial],
+  timeline_variables: nback_trial_vars,
+  sample: {
+    type: 'with-replacement',
+    size: nback_n_trials,
+    weights: [1, 2]
+  }
+};
+
+// var nback_trial_and_prep = {
+//   timeline: [testtrial, reset_nback_stimulus],
+//   timeline_variables: nback_trial_vars,
+//   sample: {
+//     type: 'with-replacement',
+//     size: nback_n_trials,
+//     weights: [1, 2]
+//   }
+// }
 
 
 
@@ -844,13 +996,14 @@ var infinite_loop = {
 
 var timeline = [];
 
+
 // intro stuff
 timeline.push(welcome_screen);
 timeline.push(fullscreen_on);
 
 // survey info
 timeline.push(demographics);
-timeline.push(lucid_def_trial);
+timeline.push(lucid_definition_trial);
 timeline.push(lucid_categorization_loop);
 timeline.push(madre_survey);
 timeline.push(lusk_survey_conditional);
@@ -868,10 +1021,10 @@ timeline.push(pre_bct_countdown);
 timeline.push(timer_start);
 timeline.push(infinite_loop);
 
-// // nback
-// timeline.push(nback_instructions);
-// timeline.push(nback_sequence);
-// timeline.push(nback_total_feedback);
+// nback
+timeline.push(nback_instructions);
+timeline.push(nback_sequence);
+timeline.push(nback_total_feedback);
 
 // outro stuff
 timeline.push(closing_screen);
