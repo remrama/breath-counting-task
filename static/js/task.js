@@ -27,29 +27,6 @@ var fullscreen_off = {
   data: {"phase":"outro"}
 };
 
-var welcome_msg1 = `<p>Hello. &#128512;</p>
-  <p>Welcome to the experiment.</p>
-  <p>Before we begin, please<br>
-  close all other browser windows,<br>
-  turn off your cell phone,<br>
-  and minimize potential distractions.</p><br><br>`;
-var welcome_msg2 = `<p>This experiment will take<br>
-  approximately 30 minutes to complete.</p>
-  <p>After about 5 minutes of brief questionnaires,<br>
-  you will be asked to complete a task that takes about 25 minutes.</p><br><br>`;
-var welcome_msg3 = `<p>Next, the experiment will switch to fullscreen mode.<br>
-  Please stay in fullscreen mode until the experiment is over.</p>
-  <p>It's also important that you do not hit the <code>Back</code> button<br>
-  of your browser at any point during the experiment.</p><br><br>`;
-var closing_msg = `<p>&#128524;<br>The experiment is over.<br>
-  Thank you for participating.</p>
-  <p>&#129504;<br>We designed this experiment to better understand<br>
-  the relationship between mindfulness and lucid dreaming.</p>
-  <p>If you have any questions, please use the contact information<br>
-  on our web page to reach out: <a href="https://pallerlab.psych.northwestern.edu/">https://pallerlab.psych.northwestern.edu/</a></p>
-  <p>You may now close your browser.<br>
-  Thanks again! &#128516;</p><br><br>`;
-
 var welcome_screen = {
   type: "html-button-response",
   choices: ["Continue"],
@@ -78,13 +55,6 @@ var closing_screen = {
 // ============================ SURVEY CONTENT
 
 // ***** variables
-
-var lucid_definition = `<p>Please read the following definition carefully.</p>
-  <p>In a lucid dream, <em>one is aware that one is dreaming during the dream.</em></p>
-  <p>Thus it is possible to wake up deliberately,
-  <br>or to influence the action of the dream actively,
-  <br>or to observe the course of the dream passively.</p>
-  <br><br>`;
 
 var lusk = {
   acronym: "LUSK",
@@ -392,22 +362,9 @@ var lucid_definition_trial = {
 
 // ******* variables
 
-var bct_length_minutes = 20; // of the whole breathing task (not including instructions)
-var length_ms = bct_length_minutes*60*1000;
-var pbar_frac = .1; // fraction for progress bar (it will jump this pct)
-var pbar_ms = pbar_frac * length_ms
-
-var min_breath_gap = 1000; // ms between breaths for practice warning
-var fixation_html = "<p style='font-size:60px'>+</p>";
-var response_keys = ["arrowdown", "arrowright", " "];
-
-var feedback_html = `<p>You responded either incorrectly or too fast.</p>
-  <p>Let's restart the counter.</p>
-  <p>Make sure you press <code>&downarrow;</code> only once for each exhale,<br>
-  and then press <code>&rightarrow;</code> on the 9th exhale.</p><br><br>`;
 
 function play_audio() {
-  var audio = new Audio("sound.mp3");
+  var audio = new Audio(audio_filename);
   audio.play();
 };
 
@@ -819,36 +776,9 @@ var infinite_loop = {
 
 // **** variables
 
-const nback_stimuli = ["Z", "X", "C", "V", "B", "N"];
-
-const how_many_back = 2; // the "n" in nback! (note instructions have to be changed with this)
-const nback_n_practice_trials = 15; // for a single practice block
-const nback_n_trials = 210; // # of trials (encoded letters)
-const nback_encoding_length = 1500; // ms
-const nback_iti = 500; // ms
-
-// calcate task length in minutes just to display it in a message
-const task_length = Math.round(nback_n_trials * (nback_encoding_length+nback_iti) / 1000/60)
 
 
 // **** instructions
-
-const nback_welcome_msg = `<p>This next task tests your ability<br>
-  to hold information over short periods of time.</p>
-  <p>This memory task will take about ${task_length} minutes.</p><br><br>`;
-const nback_instructions_msg1 = `<div style="width: 800px;">
-  <p>You will see a sequence of letters presented one at a time.</p>
-  <p>Your task is to determine if the letter on the screen matches<br>
-  the letter that appeared <b>${how_many_back} letters before</b>.</p><br><br>`;
-const nback_instructions_msg2 = `<p>If the letter is a match, <span style="font-weight: bold;">press the M key.</span></p>
-  <p>For example, if you saw the sequence X, C, V, B, V, X<br>
-  you would press the M key when the second V appeared on the screen.</p>
-  <p>You do not need to press any key when there is not a match.</p><br><br>`;
-const nback_instructions_msg3 = `<p>Next is a short series of practice trials.</p>
-  <p>If you understand the instructions and perform reasonably well,<br>
-  you will move on to the main task. Otherwise you will repeat the practice.</p>
-  <p>Remember to press the M key if the letter on the screen<br>
-  matches the letter that appeared ${how_many_back} letters ago.</p><br><br>`;
 
 var nback_welcome_screen = {
   type: "html-button-response",
@@ -1019,7 +949,7 @@ function check_pass_practice() {
   var n_nonmatch = test_trials.filter({match: false}).count();
   var n_correct = test_trials.filter({match: true, correct: true}).count();
   var n_false_alarms = test_trials.filter({match: false, correct: false}).count();
-  if ((n_correct >= 2) & (n_false_alarms <=1)) {
+  if ((n_correct >= nback_correct2pass) & (n_false_alarms <= nback_max_FA2pass)) {
     return true;
   } else {
     return false;
@@ -1032,10 +962,9 @@ var nback_practice_feedback = {
   post_trial_gap: 1000,
   stimulus: function(){
     if (check_pass_practice()) {
-      return `<p>Great job!</p>
-        <p>Continue to the main task.</p><br><br>`;
+      return nback_pass_practice_feedback;
     } else {
-      return `<p>Please reread the instructions carefully and try again.</p><br><br>`;
+      return nback_redo_practice_feedback;
     };
   }
 };
