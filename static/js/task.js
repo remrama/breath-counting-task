@@ -28,23 +28,6 @@ var consent_form = {
   css_classes: ["consent-form"]
 };
 
-// /* CONSENT FORM */
-// var information_sheet2 = {
-//   type: "external-html",
-//   url: "consent_sign.html",
-//   cont_btn: "Start",
-//   check_fn: function(elem){
-//     if (document.getElementById("consent_checkbox").checked) {
-//       return true;
-//     }
-//     else {
-//       alert("If you wish to participate, you must check the box next to the statement 'I understand all the above and confirm that I wish to continue.'");
-//       return false;
-//     }
-//     return false;
-//   }
-// };
-
 
 
 // ============================= MAIN INTRO/OUTRO CONTENT
@@ -267,7 +250,8 @@ var madre_survey = {
     {
       name: "MADRE2",
       required: true,
-      prompt: "How often have you experienced nightmares recently (in the past several months)?",
+      prompt: `How often have you experienced nightmares recently (in the past several months)?<br>
+        <i>Definition: Nightmares are dreams with strong negative emotion that result in awakening from the dreams. The dream plot can be recalled very vividly upon awakening.</i>`,
       options: [
         "never",
         "less than once a year",
@@ -282,7 +266,8 @@ var madre_survey = {
     {
       name: "MADRE3",
       required: true,
-      prompt: "How often do you experience so-called lucid dreams?",
+      prompt: `How often do you experience so-called lucid dreams?<br>
+        <i>Definition: In a lucid dream, one is aware that one is dreaming during the dream.</i>`,
       options: [
         "never",
         "less than once a year",
@@ -426,7 +411,7 @@ var msg5 = `<p>We suggest you sit in an upright,<br>
   relaxed posture that feels comfortable.</p>
   <p>Please keep your eyes at least partly open<br>
   and resting on the screen during the experiment.</p>
-  <p>The task will last about ${bct_length_minutes} minutes after a brief practice.</p><br><br>`;
+  <p>The task will last about ${bct_length_minutes} minutes.</p><br><br>`;
 var msg6 = `<p>Press the <code>&downarrow;</code> key.</p><br><br>`;
 var msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
   <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
@@ -1016,14 +1001,14 @@ var nback_practice_loop = {
 var timeline = [];
 
 // intro stuff
-timeline.push(consent_form);
+// timeline.push(consent_form);
 timeline.push(welcome_screen);
 timeline.push(fullscreen_on);
 
 // survey info
 timeline.push(demographics);
-timeline.push(lucid_definition_trial);
-timeline.push(lucid_categorization_loop);
+// timeline.push(lucid_definition_trial);
+// timeline.push(lucid_categorization_loop);
 timeline.push(madre_survey);
 timeline.push(lusk_survey_conditional);
 timeline.push(ffmq_survey);
