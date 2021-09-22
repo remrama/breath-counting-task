@@ -812,44 +812,53 @@ var infinite_loop = {
 
 
 
-
-// ============================== N-BACK TASK
+/*************************************************
+===========      N-BACK TASK       ===============
+*************************************************/
 
 
 // **** variables
 
-var nback_set = ["Z", "X", "C", "V", "B", "N"];
-var sequence = [];
-var how_many_back = 2; // the "n" in nback!
-var nback_n_trials = 210; // # of trials (encoded letters)
-var nback_iti = 500; // ms
-var nback_encoding_length = 1500; // ms
+const nback_stimuli = ["Z", "X", "C", "V", "B", "N"];
 
-var task_length = Math.round(nback_n_trials * (nback_encoding_length+nback_iti) / 1000/60)
+const how_many_back = 2; // the "n" in nback! (note instructions have to be changed with this)
+const nback_n_practice_trials = 15; // for a single practice block
+const nback_n_trials = 210; // # of trials (encoded letters)
+const nback_encoding_length = 1500; // ms
+const nback_iti = 500; // ms
+
+// calcate task length in minutes just to display it in a message
+const task_length = Math.round(nback_n_trials * (nback_encoding_length+nback_iti) / 1000/60)
+
 
 // **** instructions
 
-var instructions_msg1 = `<p>This next task tests your ability<br>
+const nback_welcome_msg = `<p>This next task tests your ability<br>
   to hold information over short periods of time.</p>
-  <p>This memory task will take about ${task_length} minutes.</p>`;
-var instructions_msg2 = `<div style="width: 800px;">
-  <p>You will see a sequence of letters presented one at a time.<br>
-  Your task is to determine if the letter on the screen matches<br>
-  the letter that appeared ${how_many_back} letters before.</p>
-  <p>If the letter is match <span style="font-weight: bold;">press the M key.</span></p>
+  <p>This memory task will take about ${task_length} minutes.</p><br><br>`;
+const nback_instructions_msg1 = `<div style="width: 800px;">
+  <p>You will see a sequence of letters presented one at a time.</p>
+  <p>Your task is to determine if the letter on the screen matches<br>
+  the letter that appeared <b>${how_many_back} letters before</b>.</p><br><br>`;
+const nback_instructions_msg2 = `<p>If the letter is a match, <span style="font-weight: bold;">press the M key.</span></p>
   <p>For example, if you saw the sequence X, C, V, B, V, X<br>
   you would press the M key when the second V appeared on the screen.</p>
-  <p>You do not need to press any key when there is not a match.</p>
-  </div>`;
-var instructions_msg3 = `<div style="width: 800px;">
-  <p>The sequence will begin on the next screen.</p>
-  <p>Remember: press the M key if the letter on the screen<br>
-  matches the letter that appeared two letters ago.</p>
-  </div>`;
+  <p>You do not need to press any key when there is not a match.</p><br><br>`;
+const nback_instructions_msg3 = `<p>Next is a short series of practice trials.</p>
+  <p>If you understand the instructions and perform reasonably well,<br>
+  you will move on to the main task. Otherwise you will repeat the practice.</p>
+  <p>Remember to press the M key if the letter on the screen<br>
+  matches the letter that appeared ${how_many_back} letters ago.</p><br><br>`;
+
+var nback_welcome_screen = {
+  type: "html-button-response",
+  stimulus: nback_welcome_msg,
+  choices: ["Begin"]
+};
 
 var nback_instructions = {
   type: "instructions",
-  pages: [instructions_msg1, instructions_msg2, instructions_msg3],
+  pages: [nback_instructions_msg1, nback_instructions_msg2],
   show_clickable_nav: true,
   allow_keys: false,
   data: {phase:"nback-intro"},
@@ -868,22 +877,18 @@ var nback_instructions = {
 
 /* feedback */
 var nback_total_feedback = {
-  type: 'html-button-response',
+  type: "html-button-response",
   stimulus: function(){
-    var test_trials = jsPsych.data.get().filter({phase: 'nback-test'}).last(nback_n_trials-2);
+    var test_trials = jsPsych.data.get().filter({phase: 'nback-test'}).last(nback_n_trials-how_many_back);
     var n_match = test_trials.filter({match: true}).count();
     var n_nonmatch = test_trials.filter({match: false}).count();
     var n_correct = test_trials.filter({match: true, correct: true}).count();
     var false_alarms = test_trials.filter({match: false, correct: false}).count();
-
-    var html = "<div style='width:800px;'>"+
-      "<p>All done!</p>"+
-      "<p>You correctly identified "+n_correct+" of the "+n_match+" matching items.</p>"+
-      "<p>You incorrectly identified "+false_alarms+" of the "+n_nonmatch+" non-matching items as matches.</p>";
-    
+    var html = `<p>All done!</p>
+      <p>You correctly identified ${n_correct} of the ${n_match} matching items.</p><br><br>`;
     return html;
   },
-  choices: ["Continue"]
+  choices: ["End experiment"]
 };
 
 
@@ -902,16 +907,26 @@ var text_obj = {
   text_color: "black",
 };
 
-function reset_nback_stimulus(trial) {
+
+// var test_trials = jsPsych.data.get().filter({phase: 'nback-test'}).last(nback_n_trials-how_many_back);
+// var n_match = test_trials.filter({match: true}).count();
+// var n_nonmatch = test_trials.filter({match: false}).count();
+
+let trial_counter = 1; // resets at each new block for getting new stims
+
+function reset_nback_stimulus() {
   // pick the letter/stimulus
-  if(sequence.length < how_many_back){
-    letter = jsPsych.randomization.sampleWithoutReplacement(nback_set, 1)[0]
+  var phase = jsPsych.timelineVariable("phase");
+  if(trial_counter < how_many_back){
+    letter = jsPsych.randomization.sampleWithoutReplacement(nback_stimuli, 1)[0]
   } else {
+    var match_letter = jsPsych.data.get().filter({phase:phase}).last(how_many_back).values()[0].letter;
     if(jsPsych.timelineVariable("match", true) == true){
-      letter = sequence[sequence.length - how_many_back];
+      letter = match_letter;
     } else {
-      var possible_letters = jsPsych.randomization.sampleWithoutReplacement(nback_set, 2);
-      if(possible_letters[0] != sequence[sequence.length - how_many_back]){
+      // grab 2 letters at random and make sure it's not the match letter :/
+      var possible_letters = jsPsych.randomization.sampleWithoutReplacement(nback_stimuli, 2);
+      if(possible_letters[0] != match_letter){
         letter = possible_letters[0];
       } else {
         letter = possible_letters[1];
@@ -924,22 +939,21 @@ function reset_nback_stimulus(trial) {
   text_obj.content = letter;
   // var data = jsPsych.data.getLastTrialData().values()[0];
   // console.log(data);
-  sequence.push(letter);
   return text_obj;
 };
 
-const nback_trial = {
+var nback_trial = {
   type: "psychophysics",
   canvas_height: 500,
   trial_duration: nback_encoding_length+nback_iti,
-  prompt: '<p>Pressing the ArrowUp/ArrowDown key, the color of the circle will change. <br>Press the space key to finish the program.</p>',
+  // prompt: '<p>Pressing the ArrowUp/ArrowDown key, the color of the circle will change. <br>Press the space key to finish the program.</p>',
   stimuli: [reset_nback_stimulus], // These can be referenced using the jsPsych.currentTrial().stimuli array.
   response_type: "key",
   choices: ["m"],
   response_start_time: 100,
   response_ends_trial: false,
   data: {
-    phase:"nback-test",
+    phase: jsPsych.timelineVariable("phase"),
     // match: function(){return jsPsych.timelineVariable("match", true);},
     match: jsPsych.timelineVariable("match"),
     letter: function(){return letter;}, // could also pull this from sequence variable
@@ -961,41 +975,88 @@ const nback_trial = {
     } else if (data.match == false) {
       data.correct = (data.key_press === null);
     };
-    console.log(data);
+    // console.log(data);
   }
 };
 
-var nback_trial_vars = [
-  {match: true},
-  {match: false}
+
+
+const nback_practice_trial_vars = [
+  {match: true, phase: "nback-practice"},
+  {match: false, phase: "nback-practice"}
+]
+
+const nback_trial_vars = [
+  {match: true, phase: "nback-test"},
+  {match: false, phase: "nback-test"}
 ]
 
 var nback_sequence = {
   timeline: [nback_trial],
   timeline_variables: nback_trial_vars,
+  on_start: function(){trial_counter++;},
   sample: {
-    type: 'with-replacement',
+    type: "with-replacement",
     size: nback_n_trials,
     weights: [1, 2]
   }
 };
 
-// var nback_trial_and_prep = {
-//   timeline: [testtrial, reset_nback_stimulus],
-//   timeline_variables: nback_trial_vars,
-//   sample: {
-//     type: 'with-replacement',
-//     size: nback_n_trials,
-//     weights: [1, 2]
-//   }
-// }
+var nback_practice_sequence = {
+  timeline: [nback_trial],
+  timeline_variables: nback_practice_trial_vars,
+  on_start: function(){trial_counter++;},
+  sample: {
+    type: "with-replacement",
+    size: nback_n_practice_trials,
+    weights: [1, 2]
+  }
+};
+
+function check_pass_practice() {
+  var test_trials = jsPsych.data.get().filter({phase: "nback-practice"}).last(nback_n_practice_trials-how_many_back);
+  var n_match = test_trials.filter({match: true}).count();
+  var n_nonmatch = test_trials.filter({match: false}).count();
+  var n_correct = test_trials.filter({match: true, correct: true}).count();
+  var n_false_alarms = test_trials.filter({match: false, correct: false}).count();
+  if ((n_correct >= 2) & (n_false_alarms <=1)) {
+    return true;
+  } else {
+    return false;
+  };
+};
+
+var nback_practice_feedback = {
+  type: "html-button-response",
+  choices: ["Okay"],
+  post_trial_gap: 1000,
+  stimulus: function(){
+    if (check_pass_practice()) {
+      return `<p>Great job!</p>
+        <p>Continue to the main task.</p><br><br>`;
+    } else {
+      return `<p>Please reread the instructions carefully and try again.</p><br><br>`;
+    };
+  }
+};
+
+var nback_practice_loop = {
+  timeline: [nback_instructions,
+    nback_practice_sequence,
+    nback_practice_feedback],
+  loop_function: function(){
+    return !(check_pass_practice());
+  },
+  on_start: function(){trial_counter = 1;}
+};
+
+
 
 
 
 // ==============  BUILD TIMELINE  ==============
 
 var timeline = [];
-
 
 // intro stuff
 timeline.push(welcome_screen);
@@ -1022,7 +1083,8 @@ timeline.push(timer_start);
 timeline.push(infinite_loop);
 
 // nback
-timeline.push(nback_instructions);
+timeline.push(nback_welcome_screen);
+timeline.push(nback_practice_loop);
 timeline.push(nback_sequence);
 timeline.push(nback_total_feedback);
 
