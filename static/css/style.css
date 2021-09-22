@@ -1,4 +1,30 @@
 
+.consent-form {
+  font: normal 16px Arial, Helvetica, sans-serif;
+  text-align: center;
+  /*color: #000000;*/
+  /*background-color: #FFFFFF;*/
+}
+
+.consent-form #scroll {
+  margin: auto;
+  height: 400px;
+  width: 600px;
+  padding: 10px;
+  border: 1px solid #4e4e4e;
+  color: #000000;
+  background-color: #FFFFFF;
+  font: 16px Arial, Helvetica, sans-serif;
+  overflow: auto;
+  text-align: left;
+}
+/*
+.bct-display {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #8C8265;
+  background-color: #F5F2E9;
+}
+*/
 .jspsych-display-element {
   font-family: Arial, Helvetica, sans-serif;
   color: #8C8265;

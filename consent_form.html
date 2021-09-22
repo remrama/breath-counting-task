@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+<!--   <style type="text/css">
+    body {
+        font: normal 16px Arial, Helvetica, serif;
+    }
+    .scroll {
+      margin: auto;
+      height: 400px;
+      width: 600px;
+      padding: 10px;
+      border: 1px solid #4e4e4e;
+      font: 16px Arial, Helvetica, serif;
+      overflow: auto;
+    }
+  </style> -->
+  <script type="text/javascript">
+    function printDiv(divName) {
+      var printContents = document.getElementById(divName).innerHTML;
+      w=window.open();
+      w.document.write(printContents);
+      w.print();
+      w.close();
+    }
+  </script>
+</head>
+
+<body>
+
+  <div id="consent-form">
+
+    <h1>Consent to Participate in Research</h1>
+    <p>
+      Thank you for your interest in taking part in this research.<br>
+      Please take time to read the following information carefully.<br><br>
+      If you would like clarity or more information, you can contact<br>
+      us through the information provided on our website.<br>
+      <a href="https://pallerlab.psych.northwestern.edu/">https://pallerlab.psych.northwestern.edu/</a>
+    </p>
+    <br>
+    
+    <div id="scroll">
+      <!-- <h1><center>Consent to Participate in Research</center></h1> -->
+
+      <strong>Title of Research Study</strong><br>
+      Sleep, dreams, and well-being
+
+      <br><br>
+      <strong>Ethics Approval</strong><br>
+      This study has been approved by the Northwestern University Institutional Review Board (Project ID <em>STU00203928</em>).
+
+      <br><br>
+      <strong>Principal Investigator</strong><br>
+      Ken Paller, PhD
+
+      <br><br>
+      <strong>Short summary</strong><br>
+      The purpose of this study is to better understand behavioral and subjective outcomes of sleep and dream patterns. You might be asked to complete a series of online questionnaires about your sleep and dream habits/experiences and personality traits. You might be asked to complete a series of online cognitive tasks that involve focused attention and keyboard/mouse responses. There is little-to-no risk to your participation in this study, and similarly no direct benefits to you. The main benefit of your participation is to broaden our understanding how how sleep and dreams relate to well-being.
+
+      <br><br>
+      <strong>How many people will be in this study?</strong><br>
+      We expect about 500 people will be in this study.
+
+      <br><br>
+      <strong>What should I know about participating in a research study?</strong>
+      <ul>
+        <li>All information is in this form.</li>
+        <li>Whether or not you take part is up to you.</li>
+        <li>You can agree to take part and later change your mind.</li>
+        <li>Your decision will not be held against you.</li>
+      </ul>
+
+      <strong>What happens if I say "Yes, I want to be in this research"?</strong><br>
+      If you agree to participate in this study by continuing past this page, you will be walked through the expected tasks. No personally identifiable information will be collected, and your data will always remain anonymous. You will first be asked some demographic information that you can choose to not report.
+
+      <br><br>
+      <strong>What happends if I do not want to be in this research?</strong><br>
+      Participation in this research is voluntary. You can decide at any point, including now, to simply close the window and leave the study.
+
+      <br><br>
+      <strong>What happens if I say "Yes" but change my mind later?</strong><br>
+      You can leave the research at any time and it will not be held against you. You will not need to explain your withdrawal. Data collection will be stopped at that point.  All data collected up until that point will remain anonymous and will not identify you in any way.
+
+      <br><br>
+      <strong>What happens to the information collected for the research?</strong><br>
+      Efforts will be made to limit the use and disclosure of your personal information to people who have a need to review this information. We cannot promise complete secrecy. Organizations that may inspect and copy your information include the IRB and other representatives of this institution. De-identified data from this study may be shared with the research community at large to advance science and health. We will remove or code any personal information that could identify you before files are shared with other researchers to ensure that, by current scientific standards and known methods, no one will be able to identify you from the information we share. Despite these measures, we cannot guarantee anonymity of your personal data.
+
+      <br><br>
+      <strong>Who can I talk to?</strong><br>
+      If you have questions, concerns, or complaints, or think the research has affected you in some way, talk to us, the research team. Our lab website includes our most up-to-date contact information: <a href="https://pallerlab.psych.northwestern.edu/">https://pallerlab.psych.northwestern.edu/</a>.
+
+      <br><br><br>
+      This research has been reviewed and approved by <a href="https://www.irb.northwestern.edu/">Northwestern University's Institutional Review Board</a> ("IRB") under Project Identifier <em>STU00203928</em>. You may talk to them at +1 (312) 503-9338 or <a href="mailto:irb@northwestern.edu">irb@northwestern.edu</a> if:
+      <ul>
+        <li>Your questions, concerns, or complaints are not being answered by the research team.</li>
+        <li>You cannot reach the research team.</li>
+        <li>You want to talk to someone besides the research team.</li>
+        <li>You have questions about your rights as a research participant.</li>
+        <li>You want to get information or provide input about this research.</li>
+      </ul>
+
+    </div>
+
+    <p>
+      <center>
+        <input type="button" onclick="printDiv('scroll')" value="Print/save form"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" id="consent-pass">Agree & Continue</button>
+      </center>
+    </p>
+
+<!-- 
+    <br>
+    <div style="margin: auto; width: 800px;">
+      <center>
+        <h3>Please confirm the following:</h3>
+      </center>
+      <ol>
+        <li>I have read the information page and understand what the study involves.</li>
+        <li>I consent to the processing of my personal-identifiable information for the purposes explained to me in the information page. I understand that my information will be handled in accordance with all applicable data protection legislation and ethical standards in research.</li>
+        <li>I understand that my pseudoanonymised personal data can be shared with others for future research, shared in public databases and in scientific reports.</li>
+        <li>I understand that I am free to withdraw from this study at any time without incurring any penalty and without giving a reason.</li>
+        <li>I understand the potential benefits and risks of participating and who to contact if I wish to lodge a complaint.</li>
+      </ol>
+      <center>
+        <input type="checkbox" id="consent_checkbox"/>I understand all the above and confirm that I wish to continue.<br><br>
+        <button type="button" id="Continue">Continue</button>
+      </center>
+    </div>
+  -->
+
+  </div>
+</body>
+</html>

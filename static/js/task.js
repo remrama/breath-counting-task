@@ -18,6 +18,34 @@ Each of the main tasks have subheadings marked with ********* for each of
 
 */
 
+// ============================= CONSENT
+/* INFORMATION SHEET */
+var consent_form = {
+  type: "external-html",
+  url: "consent_form.html",
+  cont_btn: "consent-pass",
+  execute_script: true,
+  css_classes: ["consent-form"]
+};
+
+// /* CONSENT FORM */
+// var information_sheet2 = {
+//   type: "external-html",
+//   url: "consent_sign.html",
+//   cont_btn: "Start",
+//   check_fn: function(elem){
+//     if (document.getElementById("consent_checkbox").checked) {
+//       return true;
+//     }
+//     else {
+//       alert("If you wish to participate, you must check the box next to the statement 'I understand all the above and confirm that I wish to continue.'");
+//       return false;
+//     }
+//     return false;
+//   }
+// };
+
+
 
 // ============================= MAIN INTRO/OUTRO CONTENT
 
@@ -988,6 +1016,7 @@ var nback_practice_loop = {
 var timeline = [];
 
 // intro stuff
+timeline.push(consent_form);
 timeline.push(welcome_screen);
 timeline.push(fullscreen_on);
 
@@ -1030,6 +1059,7 @@ jsPsych.init({
     audio: true
   },
   // use_webaudio: true,
+  // override_safe_mode: false,
   show_progress_bar: true,
   auto_update_progress_bar: false,
   message_progress_bar: "Time remaining",
