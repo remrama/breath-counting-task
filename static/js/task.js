@@ -19,6 +19,7 @@ Each of the main tasks have subheadings marked with ********* for each of
 */
 
 // ============================= CONSENT
+
 /* INFORMATION SHEET */
 var consent_form = {
   type: "external-html",
@@ -52,7 +53,7 @@ var fullscreen_on = {
   type: "fullscreen",
   fullscreen_mode: true,
   button_label: "Continue",
-  message: welcome_msg3,
+  message: fullscreen_warning,
   data: {"phase":"intro"}
 };
 
@@ -147,84 +148,9 @@ var ffmq = {
   ]
 };
 
-var demographics_html = `<p>
-  <label for="age">Age:</label>
-  <input type="number" name="age" min="0" max="99" required /> years
-  <br><br>
-  <label for="sex">Sex:</label>
-  <select name="sex" required>
-    <option value="">
-    <option value="1">Female
-    <option value="2">Male
-    <option value="3">Intersex
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  <label for="gender">Gender:</label>
-  <select name="gender" required>
-    <option value="">
-    <option value="1">Woman
-    <option value="2">Man
-    <option value="3">Transgender
-    <option value="4">Non-binary/non-conforming
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  <label for="ethnicity">Ethnicity:</label>
-  <select name="ethnicity" required>
-    <option value="">
-    <option value="1">American Indian or Alaska Native
-    <option value="2">Asian
-    <option value="3">Black or African American
-    <option value="4">Hispanic or Latino
-    <option value="5">Native Hawaiian or Other Pacific Islander
-    <option value="6">White
-    <option value="0">Prefer not to respond
-  </select>
-  <br><br>
-  </p>`;
 
-function generate_table_html(left_column_header, response_options, prompts, scale_acronym) {
-  // build html table
-  var html = "";
 
-  // open the table
-  html += "<table class='mytable'>";
 
-  // make the table header
-  html += "<thead><tr>";
-  // add the left column header if there is one
-  html += "<th width=70% align=left>"+left_column_header+"</th>";
-  // add a column head for each response option
-  for (r in response_options) {
-    html += "<th>"+response_options[r]+"</th>";
-  };
-  // close up the head
-  html += "</tr></thead>";
-
-  // add a row for each prompt
-  html += "<tbody>";
-  for (p in prompts) {
-    html += "<tr>"
-    // add the prompt in first cell
-    html += "<td align=left>"+prompts[p]+"</td>";
-    // add a radio button for each response option
-    for (r in response_options) {
-      html += "<td><input type='radio' name='"+scale_acronym+p.toString()+"' value='"+r.toString()+"' required></td>";
-    };
-    html += "</tr>";
-  };
-  // close the body
-  html += "</tbody>";
-
-  // close the table
-  html += "</table>";
-
-  // add a break so there's some space before the button
-  html += "<br>";
-
-  return html
-};
 
 
 // ****** jspsych survey items
@@ -318,9 +244,7 @@ var lucid_categorization_loop = {
   timeline: [
     {
       type: "html-button-response",
-      stimulus: "<p>I was dreaming of an open field, when"
-        + "<br>all of a sudden I realized I was dreaming.</p>"
-        + "<br><br>",
+      stimulus: lucid_example,
       choices: ["Non-lucid", "Lucid"],
       data: {phase: "lucid_definition"},
       prompt: "<p>Is this a lucid dream?</p>",
@@ -384,50 +308,6 @@ function play_audio() {
 
 // **** intro/instructions
 
-var msg1 = `<p>In this task, we would like you to be aware of your breath.<p>
-  <p>Please be aware of the movement of breath in and out
-  <br>in the space below your nose and above your upper lip.<p>
-  <p>There's no need to control the breath.
-  <br>Just breathe at a comfortable slow pace
-  <br>and try to breathe through your nostrils if you can.</p>
-  <br><br>`;
-var msg2 = `<p>At some point, you may notice
-  <br>your attention has wandered from the breath.</p>
-  <p>That's okay. Just gently place it back on the breath.</p>
-  <br><br>`;
-var msg3 = `<p>To help attention stay with the breath,<br>
-  you'll use a small part of your attention<br>
-  to silently count breaths from 1 to 9, again and again.</p>
-  <p>An in and out breath together makes one count.<br>
-  Say the count softly in your mind so it only gets a little attention<br>
-  while most of the attention is on feeling the breath.</p>
-  <p>Please press the Down Arrow (<code>&downarrow;</code>) with breaths 1-8,<br>
-  and the Right Arrow (<code>&rightarrow;</code>) with breath 9.</p>
-  <p>This means you'll be pressing a button with each breath.</p><br><br>`;
-var msg4 = `<p>If you find that you have forgotten the count,<br>
-  just press the spacebar and restart the count at 1 with the next breath.</p>
-  <p>Do not count the breaths using your fingers but only in your head.</p><br><br>`;
-var msg5 = `<p>We suggest you sit in an upright,<br>
-  relaxed posture that feels comfortable.</p>
-  <p>Please keep your eyes at least partly open<br>
-  and resting on the screen during the experiment.</p>
-  <p>The task will last about ${bct_length_minutes} minutes.</p><br><br>`;
-var msg6 = `<p>Press the <code>&downarrow;</code> key.</p><br><br>`;
-var msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
-  <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
-var msg8 = `<p>Press the spacebar.</p><br><br>`;
-var msg9 = `<p>Great!</p>
-  <p>The task will begin now.</p>
-  <p>The progress bar at the top is only a ${bct_length_minutes} minute timer<br>
-  and is not affected by your breathing pace or accuracy.</p>
-  <p>The experiment will end after ${bct_length_minutes} minutes.</p><br><br>`;
-
-var sound_tst_msg = `<p>Before we begin the next task,<br>
-  please make sure your sound is on.<br></p>
-  <p><b>Use the <code>Play sound</code> button below to check your volume.</b></p>
-  <p>Play the sound repeatedly until the ring plays<br>
-  at an <b>audible but non-disruptive volume.</b></p>
-  <p>Continue after you are satisfied with the volume.</p><br><br>`;
 
 var sound_tester = {
   timeline: [
@@ -486,6 +366,7 @@ var pre_bct_countdown = {
   stimulus: msg9, //+ "<div id='clockstatement'>You may begin the task in <span id='clock'>0:05</span></div>",
   choices: ["Begin"],
   data: {phase:"bct-intro"},
+  post_trial_gap: 1000,
   // on_load: function(){
   //   var wait_time = 5 * 1000; // in milliseconds
   //   var start_time = performance.now();
@@ -1045,9 +926,9 @@ jsPsych.init({
   },
   // use_webaudio: true,
   // override_safe_mode: false,
-  show_progress_bar: true,
-  auto_update_progress_bar: false,
-  message_progress_bar: "Time remaining",
+  // show_progress_bar: true,
+  // auto_update_progress_bar: true,
+  // message_progress_bar: "Time remaining",
   // timeline: [timeline, if_node],
   // on_interaction_data_update: function(data) {
   //   jsPsych.data.write(data);
