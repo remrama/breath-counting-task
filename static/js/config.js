@@ -83,7 +83,7 @@ var ffmq = {
 
 /**********  BREATH COUNTING TASK VARIABLES  ***************/
 
-var bct_length_minutes = 20; // of the whole breathing task (not including instructions)
+var bct_length_minutes = 10; // of the whole breathing task (not including instructions)
 const length_ms = bct_length_minutes*60*1000;
 const pbar_frac = .1; // fraction for progress bar (it will jump this pct)
 const pbar_ms = pbar_frac * length_ms

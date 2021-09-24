@@ -344,42 +344,45 @@ function response_handler(data) {
   // set correct to true and then adjust later if false
   var correct = true;
 
-  if (jsPsych.pluginAPI.compareKeys(data.response, " ")) {
-    // if spacebar
-    // reset counter and change correct to false
-    breath_count = 0;
-    correct = false;
+  if (data.response) { //null in the one case of a trial being cutoff at the end
+    if (jsPsych.pluginAPI.compareKeys(data.response, " ")) {
+      // if spacebar
+      // reset counter and change correct to false
+      breath_count = 0;
+      correct = false;
 
-  } else if (jsPsych.pluginAPI.compareKeys(data.response, "arrowdown")) {
-    // if down arrow
-    // increment counter and check the press is prior to 9
-    breath_count++;
-    if (breath_count >= 9) {
+    } else if (jsPsych.pluginAPI.compareKeys(data.response, "arrowdown")) {
+      // if down arrow
+      // increment counter and check the press is prior to 9
+      breath_count++;
+      if (breath_count >= 9) {
+        correct = false;
+      };
+
+    } else if (jsPsych.pluginAPI.compareKeys(data.response, "arrowright")) {
+      // if right arrow
+      // play audio, check press is exactly 9 (ie, 8), and *then* reset counter
+      play_audio();
+      if (breath_count != 8) {
+        correct = false;
+      };
+      breath_count = 0;
+    };
+    // final check to see if RT is too fast, but not on first breath
+    if ((data.rt < min_breath_gap) & (breath_count > 1)) {
       correct = false;
     };
 
-  } else if (jsPsych.pluginAPI.compareKeys(data.response, "arrowright")) {
-    // if right arrow
-    // play audio, check press is exactly 9 (ie, 8), and *then* reset counter
-    play_audio();
-    if (breath_count != 8) {
-      correct = false;
-    };
-    breath_count = 0;
-  };
-  // final check to see if RT is too fast, but not on first breath
-  if ((data.rt < min_breath_gap) & (breath_count > 1)) {
-    correct = false;
-  };
+    // if it's practice and incorrect
+    // reset the counter for display purposes
+    if ((data.phase=="bct-practice") & (!correct)) {
+      breath_count = 0;
+    };        
 
-  // if it's practice and incorrect
-  // reset the counter for display purposes
-  if ((data.phase=="bct-practice") & (!correct)) {
-    breath_count = 0;
-  };        
+    // add accuracy to the trial data structure so it gets saved
+    data.correct = correct;
 
-  // add accuracy to the trial data structure so it gets saved
-  data.correct = correct;
+  };
 };
 
 
@@ -543,14 +546,17 @@ var bct_response = {
   }
 };
 
+// var timeout = false;
 function timer_init() {
   setTimeout(function(){
-    jsPsych.endExperiment("Experiment over");
+    jsPsych.endCurrentTimeline();
+    jsPsych.finishTrial();
+    // timeout = true;
   }, length_ms);
-  setInterval(function(){
-    var cur_progress = jsPsych.getProgressBarCompleted();
-    jsPsych.setProgressBar(cur_progress + pbar_frac);
-  }, pbar_ms);
+  // setInterval(function(){
+  //   var cur_progress = jsPsych.getProgressBarCompleted();
+  //   jsPsych.setProgressBar(cur_progress + pbar_frac);
+  // }, pbar_ms);
 };
 
 var timer_start = {
@@ -567,7 +573,8 @@ var timer_start = {
 
 var infinite_loop = {
   timeline: [bct_response],
-  repetitions: 10000 // an arbitrarily high number of trials
+  repetitions: 10000, // an arbitrarily high number of trials
+  // on_start: function(){return !(timeout);}
   // on_timeline_start: function() {
   //     console.log("Block started, breath count at ", breath_count);
   // },
