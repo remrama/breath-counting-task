@@ -59,7 +59,7 @@
   color: white;
 }
 
-.mytable tr:hover {background-color: darkgrey;}
+.mytable tr:hover {background-color: whitesmoke;}
 /*.mytable tr:nth-child(even) {background-color: #f2f2f2;}*/
 
 .mytable td {

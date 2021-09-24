@@ -88,8 +88,8 @@ const length_ms = bct_length_minutes*60*1000;
 const pbar_frac = .1; // fraction for progress bar (it will jump this pct)
 const pbar_ms = pbar_frac * length_ms
 
-// add some time for practice
-bct_length_minutes += 5;
+// // add some time for practice
+// bct_length_minutes += 5;
 
 const min_breath_gap = 1000; // ms between breaths for practice warning
 const fixation_html = "<p style='font-size:60px'>+</p>";
@@ -128,18 +128,31 @@ const msg4 = `<p>If you find that you have forgotten the count,<br>
 const msg5 = `<p>We suggest you sit in an upright,<br>
   relaxed posture that feels comfortable.</p>
   <p>Please keep your eyes at least partly open<br>
-  and resting on the screen during the experiment.</p>
-  <p>The task will last about ${bct_length_minutes} minutes.</p><br><br>`;
+  and resting on the screen during the experiment.</p><br><br>`;
 const msg6 = `<p>Press the <code>&downarrow;</code> key.</p><br><br>`;
 const msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
   <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
 const msg8 = `<p>Press the spacebar.</p><br><br>`;
 const msg9 = `<p>Great!</p>
-  <p>The task will begin now.</p><br><br>`;
+  <p>The task will begin now.</p>
+  <p>The screen will only show a centered cross,<br>
+  but your responses are being recorded.<br>
+  A message will appear on screen to let<br>
+  you know when this task is over.<br>
+  The task will last for ${bct_length_minutes} minutes,<br>
+  no matter what pace your breathe or how accurate you are.</p>
+  <p>Remember to sit in a comfortable position,<br>
+  focus primarily on your breathing,<br>
+  and you can press spacebar to reset<br>
+  the counter if you get lost.</p><br><br>`;
+
+const bct_closing_msg = `<p>Finished!</p>
+  <p>No more counting your breaths. &#128578;</p><br><br>`;
+
 
 const sound_tst_msg = `<p>Before we begin the next task,<br>
   please make sure your sound is on.<br></p>
-  <p><b>Use the <code>Play sound</code> button below to check your volume.</b></p>
+  <p><b>Use the "<code>Play sound</code>" button below to check your volume.</b></p>
   <p>Play the sound repeatedly until the ring plays<br>
   at an <b>audible but non-disruptive volume.</b></p>
   <p>Continue after you are satisfied with the volume.</p><br><br>`;
@@ -159,12 +172,11 @@ const nback_max_FA2pass = 1; // # max false alarms during practice, to prevent b
 
 // calcate task length in minutes just to display it in a message
 var nback_length = Math.round(nback_n_trials * (nback_encoding_length+nback_iti) / 1000/60)
-// add some time for practice
-nback_length += 5;
+// // add some time for practice
+// nback_length += 5;
 
 const nback_welcome_msg = `<p>This next task tests your ability<br>
-  to hold information over short periods of time.</p>
-  <p>This memory task will take about ${nback_length} minutes.</p><br><br>`;
+  to hold information over short periods of time.</p><br><br>`;
 const nback_instructions_msg1 = `<div style="width: 800px;">
   <p>You will see a sequence of letters presented one at a time.</p>
   <p>Your task is to determine if the letter on the screen matches<br>
@@ -180,30 +192,31 @@ const nback_instructions_msg3 = `<p>Next is a short series of practice trials.</
   matches the letter that appeared ${how_many_back} letters ago.</p><br><br>`;
 
 const nback_pass_practice_feedback = `<p>Great job!</p>
-  <p>Continue to the main task.</p><br><br>`;
+  <p>Continue to the main task, which will<br>
+  take about ${nback_length} minutes.</p><br><br>`;
+  
 
 const nback_redo_practice_feedback = `<p>Please reread the instructions carefully and try again.</p><br><br>`;
+
+
 
 
 /*************  Main intro messages *****************/
 
 
-const approx_questionnaire_length = 5; // minutes
+// const approx_questionnaire_length = 5; // minutes
 
-const approx_study_length = nback_length + bct_length_minutes + approx_questionnaire_length;
+// const approx_study_length = nback_length + bct_length_minutes + approx_questionnaire_length;
 
 
 
 const welcome_msg1 = `<p>Hello. &#128512;</p>
   <p>Welcome to the experiment.</p>
+  <p>Altogether, this experiment will take about 30 minutes to complete.</p>
   <p>Before we begin, please<br>
   close all other browser windows,<br>
   turn off your cell phone,<br>
   and minimize potential distractions.</p><br><br>`;
-const welcome_msg2 = `<p>This experiment will take<br>
-  approximately ${approx_study_length} minutes to complete.</p>
-  <p>Broken down, it's about ${approx_questionnaire_length} minutes of questionnaires<br>
-  followed by two cognitive tasks (${bct_length_minutes} and ${nback_length} minutes).</p><br><br>`;
 const fullscreen_warning = `<p>Next, the experiment will switch to fullscreen mode.<br>
   Please stay in fullscreen mode until the experiment is over.</p>
   <p>It's also important that you do not hit the <code>Back</code> button<br>
@@ -232,7 +245,8 @@ const lucid_example = `<p>I was dreaming of an open field, when<br>
   all of a sudden I realized I was dreaming.</p><br><br>`;
 
 
-var demographics_html = `<p>
+var demographics_html = `<p>Please enter demographic information<br>
+  to the extent you are comfortable with.<br><br>
   <label for="age">Age:</label>
   <input type="number" name="age" min="0" max="99" required /> years
   <br><br>

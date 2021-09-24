@@ -45,7 +45,7 @@ var welcome_screen = {
   data: {"phase":"intro"},
   timeline: [
     {"stimulus": welcome_msg1},
-    {"stimulus": welcome_msg2},
+    // {"stimulus": welcome_msg2},
   ]
 };
 
@@ -584,6 +584,14 @@ var infinite_loop = {
 };
 
 
+var bct_closing_screen = {
+  type: "html-button-response",
+  choices: ["Continue"],
+  stimulus: bct_closing_msg,
+  data: {"phase":"bct-outro"}
+};
+
+
 
 /*************************************************
 ===========      N-BACK TASK       ===============
@@ -827,6 +835,7 @@ timeline.push(practice2_procedure);
 timeline.push(pre_bct_countdown);
 timeline.push(timer_start);
 timeline.push(infinite_loop);
+timeline.push(bct_closing_screen);
 
 // nback
 timeline.push(nback_welcome_screen);
