@@ -17,8 +17,13 @@ The display code is written using [jspsych](https://www.jspsych.org/) and preppe
 #### convert raw jspsych/cognition files to usable csvs
 #### There are different task elements, diff script for each.
 
-# clean/extract the BCT data
 python preproc-clean_bct.py
-## outputs --> <DERIVATIVE_DIR>/bct-presses.csv -- each row is a press
-## outputs --> <DERIVATIVE_DIR>/bct-cycles.csv  -- each row is a cycle
+## outputs --> <DERIVATIVE_DIR>/bct-presses.csv
+## outputs --> <DERIVATIVE_DIR>/bct-cycles.csv
+
+python preproc-clean_nback.py
+## outputs --> <DERIVATIVE_DIR>/nback.csv
+
+python preproc-clean_surveys.py
+## outputs --> <DERIVATIVE_DIR>/surveys.csv
 ```
