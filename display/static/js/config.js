@@ -119,7 +119,7 @@ const msg3 = `<p>To help attention stay with the breath,<br>
   <p>An in and out breath together makes one count.<br>
   Say the count softly in your mind so it only gets a little attention<br>
   while most of the attention is on feeling the breath.</p>
-  <p>Please press the Down Arrow (<code>&downarrow;</code>) with breaths 1-8,<br>
+  <p>Press the Down Arrow (<code>&downarrow;</code>) with breaths 1-8,<br>
   and the Right Arrow (<code>&rightarrow;</code>) with breath 9.</p>
   <p>This means you'll be pressing a button with each breath.</p><br><br>`;
 const msg4 = `<p>If you find that you have forgotten the count,<br>
@@ -138,8 +138,8 @@ const msg9 = `<p>Great!</p>
   <p>The screen will only show a centered cross,<br>
   but your responses are being recorded.<br>
   A message will appear on screen to let<br>
-  you know when this task is over.<br>
-  The task will last for ${bct_length_minutes} minutes,<br>
+  you know when this task is over.</p>
+  <p>The task will last for ${bct_length_minutes} minutes,<br>
   no matter what pace your breathe or how accurate you are.</p>
   <p>Remember to sit in a comfortable position,<br>
   focus primarily on your breathing,<br>
@@ -162,7 +162,7 @@ const sound_tst_msg = `<p>Before we begin the next task,<br>
 const nback_stimuli = ["Z", "X", "C", "V", "B", "N"];
 
 const how_many_back = 2; // the "n" in nback! (note instructions have to be changed with this)
-const nback_n_trials = 210; // # of trials (encoded letters)
+const nback_n_trials = 150; // # of trials (encoded letters)
 const nback_encoding_length = 1500; // ms
 const nback_iti = 500; // ms
 
@@ -183,12 +183,12 @@ const nback_instructions_msg1 = `<div style="width: 800px;">
   the letter that appeared <b>${how_many_back} letters before</b>.</p><br><br>`;
 const nback_instructions_msg2 = `<p>If the letter is a match, <span style="font-weight: bold;">press the M key.</span></p>
   <p>For example, if you saw the sequence X, C, V, B, V, X<br>
-  you would press the M key when the second V appeared on the screen.</p>
+  you would press the <code>M</code> key when the second V appeared on the screen.</p>
   <p>You do not need to press any key when there is not a match.</p><br><br>`;
 const nback_instructions_msg3 = `<p>Next is a short series of practice trials.</p>
   <p>If you understand the instructions and perform reasonably well,<br>
   you will move on to the main task. Otherwise you will repeat the practice.</p>
-  <p>Remember to press the M key if the letter on the screen<br>
+  <p>Remember to press the <code>M</code> key if the letter on the screen<br>
   matches the letter that appeared ${how_many_back} letters ago.</p><br><br>`;
 
 const nback_pass_practice_feedback = `<p>Great job!</p>

@@ -490,6 +490,7 @@ var mid_practice_msg = {
     <p>Now try repeating the same process without visual feedback.</p>
     <p>You will only see a cross in the center of the screen while
     <br>you count your breaths and press the buttons as before.</p>
+    <p>But don't worry, your responses are being recorded.</p>
     <br><br>`,
   choices: ["Begin"],
 };
@@ -612,7 +613,7 @@ var nback_welcome_screen = {
 
 var nback_instructions = {
   type: "instructions",
-  pages: [nback_instructions_msg1, nback_instructions_msg2],
+  pages: [nback_instructions_msg1, nback_instructions_msg2, nback_instructions_msg3],
   show_clickable_nav: true,
   allow_keys: false,
   data: {phase:"nback-intro"},
@@ -699,6 +700,7 @@ function reset_nback_stimulus() {
 var nback_trial = {
   type: "psychophysics",
   canvas_height: 500,
+  canvas_width: 500,
   trial_duration: nback_encoding_length+nback_iti,
   // prompt: '<p>Pressing the ArrowUp/ArrowDown key, the color of the circle will change. <br>Press the space key to finish the program.</p>',
   stimuli: [reset_nback_stimulus], // These can be referenced using the jsPsych.currentTrial().stimuli array.
@@ -841,7 +843,7 @@ timeline.push(bct_closing_screen);
 timeline.push(nback_welcome_screen);
 timeline.push(nback_practice_loop);
 timeline.push(nback_sequence);
-timeline.push(nback_total_feedback);
+// timeline.push(nback_total_feedback);
 
 // outro stuff
 timeline.push(closing_screen);
