@@ -17,7 +17,6 @@ Saves 2 separate dataframes
     - 1 has a row for each cycle
 """
 import os
-import json
 import glob
 
 import numpy as np
