@@ -231,11 +231,11 @@ var sound_tester = {
       stimulus: sound_tst_msg,
       choices: ["Play sound", "Continue"],
       data: {phase:"bct-intro"},
-      on_finish: function(data){
-        if (data.response == 0) {
-          play_audio();
-        };
-      }
+      // on_finish: function(data){
+      //   if (data.response == 0) {
+      //     play_audio();
+      //   };
+      // }
     }
   ],
   loop_function: function() {
@@ -270,9 +270,9 @@ var button_checks = {
   type: "html-keyboard-response",
   data: {phase:"bct-intro"},
   timeline: [
-    // {stimulus: msg6, choices: ["arrowdown"]},
-    {stimulus: msg7, choices: ["arrowright"], on_finish: play_audio},
-    // {stimulus: msg8, choices: [" "]},
+    {stimulus: msg6, choices: ["arrowdown"]},
+    {stimulus: msg7, choices: ["arrowright"]},
+    // {stimulus: msg7, choices: ["arrowright"], on_finish: play_audio},
   ]
 };
 
@@ -362,7 +362,7 @@ function response_handler(data) {
     } else if (jsPsych.pluginAPI.compareKeys(data.response, "arrowright")) {
       // if right arrow
       // play audio, check press is exactly 9 (ie, 8), and *then* reset counter
-      play_audio();
+      // play_audio();
       if (breath_count != 8) {
         correct = false;
       };
@@ -827,7 +827,7 @@ timeline.push(lusk_survey_conditional);
 timeline.push(ffmq_survey);
 
 // breath counting task
-timeline.push(sound_tester);
+// timeline.push(sound_tester);
 timeline.push(instructions);
 timeline.push(button_checks);
 timeline.push(practice1_procedure);

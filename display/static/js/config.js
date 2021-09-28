@@ -130,8 +130,9 @@ const msg5 = `<p>We suggest you sit in an upright,<br>
   <p>Please keep your eyes at least partly open<br>
   and resting on the screen during the experiment.</p><br><br>`;
 const msg6 = `<p>Press the <code>&downarrow;</code> key.</p><br><br>`;
-const msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
-  <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
+const msg7 = `<p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
+// const msg7 = `<p>On every <code>&rightarrow;</code> press, you will hear a sound.</p>
+//   <p>Press the <code>&rightarrow;</code> key.</p><br><br>`;
 const msg8 = `<p>Press the spacebar.</p><br><br>`;
 const msg9 = `<p>Great!</p>
   <p>The task will begin now.</p>
