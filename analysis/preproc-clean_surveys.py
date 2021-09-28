@@ -108,6 +108,13 @@ df = df.astype(int)
 assert not df.isnull().sum().drop([ c for c in df if c.startswith("LUSK") ]).any()
 
 
+
+def score_lusk(row):
+    return row[[c for c in df if c.startswith("LUSK")]].sum()
+df["LUSK-total"] = df.apply(score_lusk, axis=1)
+
+
+
 #### go ahead and get FFMQ factors here
 FFMQ_FACTORS = {
     "observe"  : [1, 6, 11, 15, 20, 26, 31, 36],
@@ -135,7 +142,6 @@ def get_ffmq_factor(row, factor_name):
 
 for factor_name in FFMQ_FACTORS.keys():
     df[f"FFMQ-{factor_name}"] = df.apply(get_ffmq_factor, axis=1, factor_name=factor_name)
-
 
 
 # export
