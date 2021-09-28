@@ -14,6 +14,7 @@ The display code is written using [jspsych](https://www.jspsych.org/) and preppe
 ```bash
 #### directories are specified in config.py
 
+
 #### convert raw jspsych/cognition files to usable csvs
 #### There are different task elements, diff script for each.
 
@@ -26,4 +27,9 @@ python preproc-clean_nback.py
 
 python preproc-clean_surveys.py
 ## outputs --> <DERIVATIVE_DIR>/surveys.csv
+
+
+#### analyze breath counting task
+python analyze-prelim.py
+python analyze-bigvis.py
 ```

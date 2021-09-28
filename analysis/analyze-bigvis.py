@@ -125,7 +125,7 @@ for pp, pdf in df.groupby("participant_id"):
             s=size, marker=marker, c=color,
             alpha=ALPHA, linewidths=0)
 
-EXP_LENGTH = 5 # minutes
+EXP_LENGTH = 10 # minutes
 ax.set_xlim(0, EXP_LENGTH*60)
 ax.xaxis.set(major_locator=plt.MultipleLocator(60))
     # minor_locator=plt.MultipleLocator(60))
