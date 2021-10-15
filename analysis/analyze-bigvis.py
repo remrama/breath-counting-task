@@ -132,7 +132,7 @@ ax.xaxis.set(major_locator=plt.MultipleLocator(60))
 # ax.yaxis.set(major_locator=plt.MultipleLocator(1))
 ax.set_xlabel("Experiment time (seconds)", fontsize=10)
 ax.set_ylabel("Participant", fontsize=10)
-ax.set_ylim(.5, n_participants+.5)
+ax.set_ylim(-.5, n_participants-.5)
 ax.invert_yaxis()
 
 
