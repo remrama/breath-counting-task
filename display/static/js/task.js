@@ -143,9 +143,9 @@ var lusk_survey_conditional = {
 
 var ffmq_survey = {
   type: "survey-html-form",
-  preamble: ffmq.preamble,
-  html: generate_table_html(ffmq.left_header,
-    ffmq.responses, ffmq.prompts, ffmq.acronym),
+  preamble: ffmq_short.preamble,
+  html: generate_table_html(ffmq_short.left_header,
+    ffmq_short.responses, ffmq_short.prompts, ffmq_short.acronym),
   data: {phase:"ffmq"}
 };
 

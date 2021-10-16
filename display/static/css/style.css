@@ -26,13 +26,14 @@
 }
 */
 .jspsych-display-element {
-  font-family: Arial, Helvetica, sans-serif;
+  font: normal 22px Arial, Helvetica, sans-serif;
   color: #8C8265;
   background-color: #F5F2E9;
 }
 
 .jspsych-btn {
-  font-family: Arial, Helvetica, sans-serif;
+  font: normal 22px Arial, Helvetica, sans-serif;
+  /*font-family: Arial, Helvetica, sans-serif;*/
   /*padding: 2px 2px;*/
   /*font-size: 25px;*/
   /*border-color: black;*/
