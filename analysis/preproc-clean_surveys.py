@@ -41,9 +41,16 @@ for fn in import_fnames:
     # df_ = df_[df_["phase"].isin(SURVEYS)]
     participant_data = {}
     for survey_name in SURVEYS:
-        survey_data_str = df_.loc[df_["phase"].eq(survey_name), "response"].values[0]
-        survey_data = json.loads(survey_data_str)
-        participant_data.update(survey_data)
+        # some subjects won't have the LUSK (if they don't lucid dream)
+        if df_["phase"].eq(survey_name).any():
+            survey_data_str = df_.loc[df_["phase"].eq(survey_name), "response"].values[0]
+            survey_data = json.loads(survey_data_str)
+            ### TEMPORARY FOR DEV WHILE A FEW SUBJS STILL HAVE LONG FFMQs
+            ### only use the short form
+            if survey_name=="ffmq" and "short" not in list(survey_data.keys())[0]:
+                pass
+            else:
+                participant_data.update(survey_data)
     participant_id = df_["run_id"].unique()[0]
     ser_ = pd.Series(participant_data, name=participant_id)
     ser_list.append(ser_)
@@ -95,54 +102,71 @@ for col in df:
     if "LUSK" in col or "FFMQ" in col:
         # probe_number = "".join([ char for char in col if char.isdigit() ])
         scale = col[:4] # conveniently they are both 4 characters long
-        probe_number = 1 + int(col[4:])
+        probe_number = 1 + int("".join([ c for c in col if c.isdigit() ]))
         newcol = f"{scale}-{probe_number:02d}"
         df.rename(columns={col:newcol}, inplace=True)
 
 
 # convert to an int that can handle NAs
 ### this will break once NAs from the LUSK are involved
-df = df.astype(int)
+df = df.astype(float).astype("Int64")
 
-# only LUSK can be null
-assert not df.isnull().sum().drop([ c for c in df if c.startswith("LUSK") ]).any()
+# # only LUSK can be null
+# ###### TEMP REMOVE WHILE FFMQ HAS SOME NULLS IN IT FROM LONG FORMS
+# assert not df.isnull().sum().drop([ c for c in df if c.startswith("LUSK") ]).any()
 
 
 
 def score_lusk(row):
-    return row[[c for c in df if c.startswith("LUSK")]].sum()
+    probes = row[[c for c in df if c.startswith("LUSK")]]
+    return pd.NA if probes.isnull().any() else probes.sum()
 df["LUSK-total"] = df.apply(score_lusk, axis=1)
 
 
 
 #### go ahead and get FFMQ factors here
+
+# # long 39-question version
+# REVERSE_SCORED = [12, 16, 22]
+# FFMQ_FACTORS = {
+#     "observe"  : [1, 6, 11, 15, 20, 26, 31, 36],
+#     "describe" : [2, 7, 12, 16, 22, 27, 32, 37],
+#     "aware"    : [5, 8, 13, 18, 23, 28, 34, 38],
+#     "nonjudge" : [3, 10, 14, 17, 25, 30, 35, 39],
+#     "nonreact" : [4, 9, 19, 21, 24, 29, 33]
+# }
+
+# short 15-question version
+REVERSE_SCORED = [4, 7, 8, 9, 13, 14]
 FFMQ_FACTORS = {
-    "observe"  : [1, 6, 11, 15, 20, 26, 31, 36],
-    "describe" : [2, 7, 12, 16, 22, 27, 32, 37],
-    "aware"    : [5, 8, 13, 18, 23, 28, 34, 38],
-    "nonjudge" : [3, 10, 14, 17, 25, 30, 35, 39],
-    "nonreact" : [4, 9, 19, 21, 24, 29, 33]
+    "observe"  : [1, 6, 11],
+    "describe" : [2, 7, 12],
+    "aware"    : [3, 8, 13],
+    "nonjudge" : [4, 9, 14],
+    "nonreact" : [5, 10, 15]
 }
 
-REVERSE_SCORED = [12, 16, 22]
 
 def get_ffmq_factor(row, factor_name):
     relevant_probes = FFMQ_FACTORS[factor_name]
     col_names = [ f"FFMQ-{p:02d}" for p in relevant_probes ]
     probe_scores = row[col_names]
-    # add 1 bc I think it's traditionally 1-5 not 0-4?
-    probe_scores += 1
-    # reverse code if necessary
-    for p in relevant_probes:
-        if p in REVERSE_SCORED:
-            colname = f"FFMQ-{p:02d}"
-            probe_scores[colname] = 5 - probe_scores[colname]
-    score = row[col_names].sum()
-    return score
+    if probe_scores.isnull().any():
+        return pd.NA
+    else:
+        # add 1 bc I think it's traditionally 1-5 not 0-4?
+        probe_scores += 1
+        # reverse code if necessary
+        for p in relevant_probes:
+            if p in REVERSE_SCORED:
+                colname = f"FFMQ-{p:02d}"
+                probe_scores[colname] = 5 - probe_scores[colname]
+        score = row[col_names].sum()
+        return score
 
 for factor_name in FFMQ_FACTORS.keys():
     df[f"FFMQ-{factor_name}"] = df.apply(get_ffmq_factor, axis=1, factor_name=factor_name)
 
 
 # export
-df.to_csv(export_fname, index=True)
+df.to_csv(export_fname, index=True, na_rep="NA")
