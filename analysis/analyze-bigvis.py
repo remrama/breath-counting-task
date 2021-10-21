@@ -110,7 +110,7 @@ ALPHA = .7
 # open plot
 _, ax = plt.subplots(figsize=(6.5,.5*n_participants), constrained_layout=True)
 
-for pp, pdf in df.groupby("participant_id"):
+for i, (pp, pdf) in enumerate(df.groupby("participant_id")):
     pdf["cumrt"] = pdf["rt"].cumsum()
     for (resp, correct), _pdf in pdf.groupby(["response", "press_correct"]):
         marker = RESPONSE_MARKERS[resp]
@@ -120,7 +120,7 @@ for pp, pdf in df.groupby("participant_id"):
         else:
             color = CORR_PALETTE["correct"] if correct else CORR_PALETTE["incorrect"]
         xvals = _pdf["cumrt"].values
-        yvals = np.repeat(pp, xvals.size)
+        yvals = np.repeat(i+1, xvals.size)
         ax.scatter(xvals, yvals,
             s=size, marker=marker, c=color,
             alpha=ALPHA, linewidths=0)
@@ -132,7 +132,7 @@ ax.xaxis.set(major_locator=plt.MultipleLocator(60))
 # ax.yaxis.set(major_locator=plt.MultipleLocator(1))
 ax.set_xlabel("Experiment time (seconds)", fontsize=10)
 ax.set_ylabel("Participant", fontsize=10)
-ax.set_ylim(-.5, n_participants-.5)
+ax.set_ylim(.5, n_participants+.5)
 ax.invert_yaxis()
 
 
