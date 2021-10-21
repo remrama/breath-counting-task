@@ -127,11 +127,14 @@ for i, (pp, pdf) in enumerate(df.groupby("participant_id")):
             alpha=ALPHA, linewidths=0)
 
 EXP_LENGTH = 10 # minutes
+def sec2min_formatter(x, pos=None):
+    assert x/60 == x//60
+    return int(x/60)
 ax.set_xlim(0, EXP_LENGTH*60)
-ax.xaxis.set(major_locator=plt.MultipleLocator(60))
-    # minor_locator=plt.MultipleLocator(60))
-# ax.yaxis.set(major_locator=plt.MultipleLocator(1))
-ax.set_xlabel("Experiment time (seconds)", fontsize=10)
+ax.xaxis.set(major_locator=plt.MultipleLocator(60),
+    major_formatter=sec2min_formatter)
+ax.yaxis.set(major_locator=plt.MultipleLocator(1))
+ax.set_xlabel("Experiment time (minutes)", fontsize=10)
 ax.set_ylabel("Participant", fontsize=10)
 ax.set_ylim(.5, n_participants+.5)
 ax.invert_yaxis()
@@ -153,16 +156,16 @@ button_legend_elements = [ plt.matplotlib.lines.Line2D([0], [0],
         markerfacecolor="white", markeredgecolor="black")
     for x, m in RESPONSE_MARKERS.items() ]
 legend1 = ax.legend(handles=button_legend_elements,
-    loc="lower left", bbox_to_anchor=(0, 1), **LEGENDS_ARGS)
+    loc="lower left", bbox_to_anchor=(0, 1),
+    title="button press", **LEGENDS_ARGS)
 
 accuracy_legend_elements = [ plt.matplotlib.patches.Patch(
         label= "correct" if x=="correct" else "incorrect",
         facecolor=c, edgecolor="white")
     for x, c in ACC_PALETTE.items() ]
 legend2 = ax.legend(handles=accuracy_legend_elements,
-    loc="lower left", bbox_to_anchor=(.2, 1), **LEGENDS_ARGS)
-
-
+    loc="lower left", bbox_to_anchor=(.2, 1),
+    title="accuracy", **LEGENDS_ARGS)
 
 ax.add_artist(legend1)
 ax.add_artist(legend2)
