@@ -99,16 +99,17 @@ RESPONSE_SIZES = {
     "arrowdown": 2,
 }
 
-CORR_PALETTE = {
-    "space" : "gray",
+ACC_PALETTE = {
     "correct" : "forestgreen",
     "incorrect" : "indianred",
+    "space" : "gray",
 }
 
 ALPHA = .7
 
 # open plot
-_, ax = plt.subplots(figsize=(6.5,.5*n_participants), constrained_layout=True)
+_, ax = plt.subplots(figsize=(6.5,.5*n_participants),
+    gridspec_kw=dict(top=.7, bottom=.25, left=.1, right=.9))
 
 for i, (pp, pdf) in enumerate(df.groupby("participant_id")):
     pdf["cumrt"] = pdf["rt"].cumsum()
@@ -116,9 +117,9 @@ for i, (pp, pdf) in enumerate(df.groupby("participant_id")):
         marker = RESPONSE_MARKERS[resp]
         size = RESPONSE_SIZES[resp]
         if resp == "space":
-            color = CORR_PALETTE[resp]
+            color = ACC_PALETTE[resp]
         else:
-            color = CORR_PALETTE["correct"] if correct else CORR_PALETTE["incorrect"]
+            color = ACC_PALETTE["correct"] if correct else ACC_PALETTE["incorrect"]
         xvals = _pdf["cumrt"].values
         yvals = np.repeat(i+1, xvals.size)
         ax.scatter(xvals, yvals,
@@ -134,6 +135,37 @@ ax.set_xlabel("Experiment time (seconds)", fontsize=10)
 ax.set_ylabel("Participant", fontsize=10)
 ax.set_ylim(.5, n_participants+.5)
 ax.invert_yaxis()
+
+## need 2 legends, one for the button press type and one for accuracy
+
+LEGENDS_ARGS = {
+    "fontsize" : 8,
+    "frameon" : False,
+    # "borderaxespad" : -.5,
+    "labelspacing" : .2, # rowspacing, vertical space bewteen legend entries
+    # "handletextpad" : -.2 # space between legend marker and label
+    # # "columnspacing"=.5,
+}
+
+
+button_legend_elements = [ plt.matplotlib.lines.Line2D([0], [0],
+        label=x, marker=m, markersize=6, color="white",
+        markerfacecolor="white", markeredgecolor="black")
+    for x, m in RESPONSE_MARKERS.items() ]
+legend1 = ax.legend(handles=button_legend_elements,
+    loc="lower left", bbox_to_anchor=(0, 1), **LEGENDS_ARGS)
+
+accuracy_legend_elements = [ plt.matplotlib.patches.Patch(
+        label= "correct" if x=="correct" else "incorrect",
+        facecolor=c, edgecolor="white")
+    for x, c in ACC_PALETTE.items() ]
+legend2 = ax.legend(handles=accuracy_legend_elements,
+    loc="lower left", bbox_to_anchor=(.2, 1), **LEGENDS_ARGS)
+
+
+
+ax.add_artist(legend1)
+ax.add_artist(legend2)
 
 
 plt.savefig(os.path.join(c.RESULTS_DIR, "bct-allpresses.png"))
