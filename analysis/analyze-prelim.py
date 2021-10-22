@@ -66,7 +66,7 @@ participant_summary.columns = ["accuracy", "rt",
     "n_cycles", "miscount_rate", "reset_rate"]
 
 
-export_fname_df = os.path.join(c.RESULTS_DIR, "psumm.csv")
+export_fname_df = os.path.join(c.DERIVATIVE_DIR, "bct-performance.csv")
 participant_summary.to_csv(export_fname_df, index=True)
 
 
