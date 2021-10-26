@@ -29,8 +29,10 @@ python preproc-clean_surveys.py
 ## outputs --> <DERIVATIVE_DIR>/surveys.csv
 
 
-#### analyze breath counting task
+
+#### analyze nback and BCT
 python analyze-prelim.py
+python analyze-nback.py
 python analyze-bigvis.py
 
 #### relate LUSK to cognitive tasks
