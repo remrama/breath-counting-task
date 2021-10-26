@@ -32,4 +32,7 @@ python preproc-clean_surveys.py
 #### analyze breath counting task
 python analyze-prelim.py
 python analyze-bigvis.py
+
+#### relate LUSK to cognitive tasks
+python analyze-lusk2tasks.py
 ```
