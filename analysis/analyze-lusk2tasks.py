@@ -42,9 +42,8 @@ plot_df = df[list(RELEVANT_COLUMNS.keys())].rename(columns=RELEVANT_COLUMNS)
 
 PALETTE = dict(BCT="orange", WM="gray")
 SCATTER_ARGS = {
-    "marker" : "o",
     "alpha" : .7,
-    "s" : 10,
+    "s" : 14,
 }
 
 fig, ax1 = plt.subplots(figsize=(3,2.5), constrained_layout=True)
@@ -66,7 +65,8 @@ XAXIS_VAR = "LUSK"
 xvals = plot_df[XAXIS_VAR].values
 for yvar, ax in zip(YVAR_ORDER, axes):
     yvals = plot_df[yvar].values
-    ax.scatter(xvals, yvals, c=PALETTE[yvar], **SCATTER_ARGS)
+    marker = "o" if yvar == "BCT" else "*"
+    ax.scatter(xvals, yvals, marker=marker, c=PALETTE[yvar], **SCATTER_ARGS)
     # sea.regplot(data=plot_df, x=XAXIS_VAR, y=yvar, ax=ax)
 
 
