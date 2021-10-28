@@ -155,13 +155,16 @@ cycle_acc = df_cycle.groupby(["participant_id", "cycle"]
 cycle_rt = df_cycle.groupby(["participant_id", "cycle"]
     )["rt"].mean(
     ).rename("rt_mean")
+cycle_rt_std = df_cycle.groupby(["participant_id", "cycle"]
+    )["rt"].std(
+    ).rename("rt_std")
 cycle_bc = df_cycle.groupby(["participant_id", "cycle"]
     # )["bc"].apply(lambda s: s.max()+1 if 0 in s.tolist() else s.max()
     ).apply(lambda df: df.iloc[-2].bc+1 if df.iloc[-1].response=="space" else df.iloc[-1].bc
     ).rename("final_breath")
 
 # cycle_df = cycle_acc.to_frame().join(cycle_bc).sort_index()
-cycle_df = pd.concat([cycle_bc, cycle_acc, cycle_rt], axis=1)
+cycle_df = pd.concat([cycle_bc, cycle_acc, cycle_rt, cycle_rt_std], axis=1)
 # cycle_acc["acc2"] = cycle_acc["acc1"].str.split("-").str[0]
 # cycle_acc["acc3"] = (cycle_acc["acc1"] == "correct")
 

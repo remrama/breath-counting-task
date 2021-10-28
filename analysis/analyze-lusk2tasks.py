@@ -72,3 +72,31 @@ for yvar, ax in zip(YVAR_ORDER, axes):
 
 plt.savefig(export_fname)
 plt.close()
+
+
+
+################### most stuff together
+################### most stuff together
+
+SCATTER_ARGS = {
+    "s" : 8,
+    "color": "w",
+    "edgecolor": "k",
+    "linewidth" : .5,
+    "clip_on" : False
+}
+PAIRPLOT_ARGS = {
+    "kind" : "reg",
+    "diag_kind" : "hist",
+    "height" : 1,
+    "aspect" : 1,
+    "corner" : True,
+    # "plot_kws" : dict(cmap="mako"),
+    "plot_kws" : dict(scatter_kws=SCATTER_ARGS),
+    "diag_kws" : dict(color="black"),
+    "grid_kws" : dict(diag_sharey=False, despine=True, layout_pad=.5),
+}
+g = sea.pairplot(data=plot_df, **PAIRPLOT_ARGS)
+
+plt.savefig(os.path.join(c.RESULTS_DIR, "correlations.png"))
+plt.close()

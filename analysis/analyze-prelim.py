@@ -48,26 +48,29 @@ use it to plot, save out too
 # get the number of cycles and accuracy per participant
 df["correct"] = df["accuracy"]=="correct"
 
-acc = df.groupby("participant_id").correct.mean().rename("accuracy")
-rt = df.groupby("participant_id").rt_mean.mean().rename("rt")
-n_cycles = df.groupby("participant_id").size().rename("n_cycles")
-participant_summary = pd.concat([acc, n_cycles, rt], axis=1)
+# acc = df.groupby("participant_id").correct.mean().rename("accuracy")
+# rt = df.groupby("participant_id").rt_mean.mean().rename("rt")
+# rt_sd = df.groupby("participant_id").rt_mean.mean().rename("rt_sd")
+# n_cycles = df.groupby("participant_id").size().rename("n_cycles")
+# participant_summary = pd.concat([acc, n_cycles, rt, rt_sd], axis=1)
 
 participant_summary = df.groupby("participant_id"
     ).agg({
         "correct": "mean",
-        "rt_mean": "mean",
+        "rt_mean": ["mean", "std"],
+        "rt_std": "mean",
         "cycle": "max",
         "accuracy": [ lambda s: (s=="miscount").mean(),
                       lambda s: (s=="reset").mean() ]
     }
 )
 participant_summary.columns = ["accuracy", "rt",
+    "rt_sd", "rt_std_mean",
     "n_cycles", "miscount_rate", "reset_rate"]
 
 
 export_fname_df = os.path.join(c.DERIVATIVE_DIR, "bct-performance.csv")
-participant_summary.to_csv(export_fname_df, index=True)
+participant_summary.round(3).to_csv(export_fname_df, index=True)
 
 
 
@@ -147,5 +150,34 @@ plt.close()
 
 
 
+
+""" ========================================================
+correlate all the BCT measures
+**this should overtake the previous plots
+""" 
+SCATTER_ARGS = {
+    "s" : 8,
+    "color": "w",
+    "edgecolor": "k",
+    "linewidth" : .5,
+    "clip_on" : False
+}
+PAIRPLOT_ARGS = {
+    "kind" : "reg",
+    "diag_kind" : "hist",
+    "height" : 1,
+    "aspect" : 1,
+    "corner" : True,
+    # "plot_kws" : dict(cmap="mako"),
+    "plot_kws" : dict(scatter_kws=SCATTER_ARGS),
+    "diag_kws" : dict(color="black"),
+    "grid_kws" : dict(diag_sharey=False, despine=True, layout_pad=.5),
+}
+
+
+g = sea.pairplot(data=participant_summary, **PAIRPLOT_ARGS)
+
+plt.savefig(os.path.join(c.RESULTS_DIR, "bct-correlations.png"))
+plt.close()
 
 
